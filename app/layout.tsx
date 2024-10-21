@@ -1,11 +1,20 @@
+import QueryProvider from '@/components/QueryProvider';
 import './globals.css';
 import localFont from 'next/font/local';
+import NavBar from '@/components/nav/NavBar';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Metadata } from 'next';
+import { getMetadata } from '@/constants/metadata';
+import ToastContainer from '@/components/toast/ToastContainer';
+import { TokenMonitor } from '@/components/TokenMonitor';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
+export const metadata: Metadata = getMetadata();
 
 const pretendard = localFont({
-  src: '../static/font/Pretendard-Light.otf',
+  src: '../fonts/PretendardVariable.woff2',
   display: 'swap',
-  weight: '100 200 300 400 500 600 700 800 900',
-  variable: '--font-pretendard',
+  weight: '45 920',
 });
 
 export default function RootLayout({
@@ -14,8 +23,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${pretendard.variable}`}>
-      <body className={pretendard.className}>{children}</body>
+    <html lang="ko">
+      <body className={pretendard.className}>
+        <div className="flex flex-col w-full relative">
+          <NavBar />
+          <QueryProvider>
+            <div className="bg-gray-100 flex items-center flex-col">{children}</div>
+            <SpeedInsights />
+            {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+          </QueryProvider>
+        </div>
+        <div id="global-modal"></div>
+        <TokenMonitor />
+        <ToastContainer />
+      </body>
     </html>
   );
 }

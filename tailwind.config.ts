@@ -14,9 +14,25 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    animation: {
+      'expand-line': 'expandLine 2s ease-in-out',
+      'fill-heart': 'fillHeart 1s ease-in-out',
+      'fFill-heart': 'fillHeart 1s ease-in-out',
+    },
+    keyframes: {
+      expandLine: {
+        '0%': { transform: 'translateX(-100%)' },
+        '100%': { transform: 'translateX(0)' },
+      },
+      fillHeart: {
+        '0%': { transform: 'scale(0)' },
+        '70%': { transform: 'scale(1.2)' },
+        '100%': { transform: 'scale(1)' },
+      },
+    },
     screens: {
       md: '744px',
-      lg: '1128px',
+      lg: '1200px',
     },
     extend: {
       spacing: {
@@ -24,6 +40,13 @@ const config: Config = {
           acc[`${px}pxr`] = pxToRem(px);
           return acc;
         }, {}),
+      },
+      boxShadow: {
+        'progressBar-shadow':
+          '-2px -2px 12px 0px rgba(219, 219, 219, 0.20), 2px 2px 12px 0px rgba(219, 219, 219, 0.20)',
+      },
+      fontFamily: {
+        tmoney: ['Tmoney RoundWind'],
       },
       fontSize: {
         xs: ['12px', '16px'],
@@ -70,6 +93,10 @@ const config: Config = {
         },
         red: {
           600: '#DC2626',
+        },
+        listColor: {
+          fromColor: 'rgba(255, 255, 255 ,1)',
+          toColor: 'rgba(255, 255, 255 ,0)',
         },
       },
     },

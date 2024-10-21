@@ -1,6 +1,8 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import axios, { AxiosError } from 'axios';
 import { getServerSideCookie } from './serverSideCookies';
+import { redirect } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { toast } from '@/components/toast/ToastManager';
 
 const ENV_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -15,16 +17,40 @@ const instanceForSS = axios.create({
 
 // Request 인터셉터
 instanceForCS.interceptors.request.use(async (config) => {
-  const accessToken = Cookies.get('accessToken');
-  if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+  const token = Cookies.get('token');
+
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
+instanceForCS.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error instanceof AxiosError) {
+      toast(error.response?.data.message ?? '알 수 없는 오류가 발생하였습니다.');
+      if (error.response?.status === 401 && error.config?.url !== 'auths/signin') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
 instanceForSS.interceptors.request.use(async (config) => {
-  const accessToken = await getServerSideCookie('accessToken');
-  if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+  const token = await getServerSideCookie('token');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+instanceForSS.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error instanceof AxiosError && error.response?.status === 401) {
+      redirect('/login');
+    }
+    return Promise.reject(error);
+  },
+);
 
 export function getInstance() {
   const isServer = typeof window === 'undefined';
