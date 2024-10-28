@@ -42,7 +42,7 @@ export const getReviewsUrl = () => {
 
 export const getReviews = async ({
   pageParam,
-  reviewUrl = '&type=DALLAEMFIT&sortOrder=desc&sortBy=createdAt',
+  reviewUrl = 'type=DALLAEMFIT&sortOrder=desc&sortBy=createdAt',
 }: {
   pageParam: number;
   reviewUrl?: string;
@@ -50,7 +50,7 @@ export const getReviews = async ({
   const limit = 10;
   const offset = pageParam * limit;
   const result = await fetcher.get(`reviews?limit=${limit}&offset=${offset}&${reviewUrl}`);
-  return result.data; // 필요한 데이터만 반환
+  return result.data;
 };
 
 export const getScores = async (typeTab: GatheringType = 'DALLAEMFIT'): Promise<Points[]> => {
@@ -65,7 +65,9 @@ export const useReviewPrefetchQuery = async () => {
     sortBy: '최신 순',
     date: '날짜 선택',
   };
+
   const queryClient = new QueryClient();
+
   await Promise.all([
     queryClient.prefetchInfiniteQuery({
       queryKey: [['reviews'], queryKeys],
@@ -77,17 +79,19 @@ export const useReviewPrefetchQuery = async () => {
       queryFn: () => getScores(),
     }),
   ]);
+
   return queryClient;
 };
 
 export const useReviewsInfiniteQuery = (queryKey: reviewQueryKeys, reviewUrl: string) => {
   return useInfiniteQuery({
     queryKey,
-    queryFn: ({ pageParam = 0 }) => getReviews({ pageParam, reviewUrl: reviewUrl }), // 페이지 매개변수 처리
+    queryFn: ({ pageParam = 0 }) => getReviews({ pageParam, reviewUrl }),
     getNextPageParam: (lastPage, allPages) => {
-      return allPages[allPages.length - 1].length === 3 ? allPages.length : undefined;
+      return lastPage.length === 3 ? allPages.length : undefined;
     },
-    initialPageParam: 0, // 첫 페이지는 1로 시작
+    initialPageParam: 0,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -95,5 +99,6 @@ export const useScoresQuery = (queryKey: reviewScoresQueryKeys, typeTab: Gatheri
   return useQuery({
     queryKey,
     queryFn: () => getScores(typeTab),
+    staleTime: 5 * 60 * 1000,
   });
 };
