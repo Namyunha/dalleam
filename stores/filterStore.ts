@@ -33,7 +33,7 @@ const useFilterStore = create<FilterState>((set) => ({
       sortBy: '마감 임박',
       type: 'DALLAEMFIT',
       reviewSortBy: '최신 순',
-    }), // 필터 초기화 함수
+    }),
 }));
 
 export default useFilterStore;

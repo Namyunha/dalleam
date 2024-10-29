@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import ReviewCard from '@/components/card/ReviewCard';
 import { useInfiniteObserver } from '@/hooks/useInfiniteObserver';
-import { useReviewsInfiniteQuery, getReviewsUrl } from '@/services/reviews';
+import { useReviewsInfiniteQuery, getParams } from '@/services/reviews';
 import LocationFilter from '@/components/filter/LocationFilter';
 import DateFilter from '@/components/filter/DateFilter';
 import SortByFilter from '@/components/filter/SortByFilter';
@@ -43,10 +43,9 @@ export default function ReviewList() {
       }
     },
   });
-
-  const { reviewUrl, queryKeys } = getReviewsUrl();
+  const { params, reviewQueryKeys } = getParams();
   const { data, fetchNextPage, isLoading, isError, isFetchingNextPage, hasNextPage } =
-    useReviewsInfiniteQuery(queryKeys, reviewUrl);
+    useReviewsInfiniteQuery(reviewQueryKeys, params);
   const observerRef = useInfiniteObserver(fetchNextPage, { threshold: 0.2 });
 
   if (isError) return <div>데이터를 불러올 수 없습니다.</div>;

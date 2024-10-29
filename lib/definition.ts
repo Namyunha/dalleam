@@ -115,3 +115,11 @@ export type reviewScoresQueryKeys = [
     date?: string;
   },
 ];
+
+export type paramsType = {
+  type: GatheringType;
+  sortOrder: 'desc' | 'asc';
+  location: LocationType;
+  date: string;
+  sortBy: sortType;
+};

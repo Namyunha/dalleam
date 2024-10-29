@@ -1,6 +1,15 @@
-export type GatheringType = 'DALLAEMFIT' | 'OFFICE_STRETCHING' | 'MINDFULNESS' | 'WORKATION';
+import { gatheringSchema } from '@/constants/formSchema';
+import { gatherings, locations, sorts } from '@/constants/gathering';
 
-export type Location = '건대입구' | '을지로3가' | '신림' | '홍대입구';
+import { Control } from 'react-hook-form';
+
+export type GatheringType = keyof typeof gatherings;
+export type LocationType = keyof typeof locations;
+export type sortType = keyof typeof sorts;
+
+export type ControlProps = {
+  control: Control<gatheringSchema>;
+};
 
 export type Gathering = {
   teamId: string;
@@ -9,7 +18,7 @@ export type Gathering = {
   name: string;
   dateTime: string;
   registrationEnd: string;
-  location: Location;
+  location: LocationType;
   participantCount: number;
   capacity: number;
   image: string;
@@ -20,8 +29,12 @@ export type Gathering = {
 export type User = {
   teamId: string;
   id: number;
+  email: string;
   name: string;
-  image: string;
+  companyName: string;
+  image: string | null;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type Review = {
@@ -34,32 +47,72 @@ export type Review = {
     Gathering,
     'registrationEnd' | 'participantCount' | 'capacity' | 'createdBy' | 'canceledAt'
   >;
-  User: User;
+  User: {
+    teamId: string;
+    id: number;
+    name: string;
+    image: string | null;
+  };
 };
 
 export type Points = {
-  teamId: 'FESI';
+  teamId: string;
   type: GatheringType;
   oneStar: number;
   twoStars: number;
   threeStars: number;
   fourStars: number;
   fiveStars: number;
+  averageScore: number;
 };
 
+export type JoinedGathering = {
+  teamId: string;
+  id: number;
+  type: GatheringType;
+  name: null;
+  dateTime: string;
+  registrationEnd: string;
+  location: LocationType;
+  participantCount: number;
+  capacity: number;
+  image: string;
+  createdBy: number;
+  canceledAt: string | null;
+  joinedAt: string;
+  isCompleted: boolean;
+  isReviewed: boolean;
+};
+
+export type Participant = {
+  teamId: string;
+  userId: number;
+  gatheringId: number;
+  joinedAt: string;
+  User: {
+    id: number;
+    email: string;
+    name: string;
+    companyName: string;
+    image?: string;
+  };
+};
 export type reviewQueryKeys = [
-  'reviews',
+  ['reviews'],
   {
     type: GatheringType;
-    location?: Location;
+    location?: LocationType;
+    sortBy?: sortType;
+    date?: string;
   },
 ];
 
 export type reviewScoresQueryKeys = [
-  'reviews',
-  'scores',
+  ['reviews', 'scores'],
   {
     type: GatheringType;
-    location?: Location;
+    location?: LocationType;
+    sortBy?: sortType;
+    date?: string;
   },
 ];

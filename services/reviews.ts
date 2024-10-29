@@ -1,19 +1,14 @@
-import {
-  Review,
-  Points,
-  GatheringType,
-  reviewQueryKeys,
-  reviewScoresQueryKeys,
-} from '@/lib/definition';
-import { getInstance } from '@/utils/axios';
-import { QueryClient, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { reviewQueryKeys, reviewScoresQueryKeys, paramsType } from '@/types/review';
+import { GatheringType } from '@/types/gathering';
+
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import useFilterStore from '@/stores/filterStore';
+import { getReviews, getScores } from '@/api/review';
 
-const fetcher = getInstance();
-
-export const getReviewsUrl = () => {
+export const getParams = () => {
   const { type, location, date, reviewSortBy } = useFilterStore();
-  let convertSortUrl = 'createdAt';
+  let convertSortUrl: 'createdAt' | 'score' | 'participantCount' = 'createdAt';
+  let queryKeys = { type, location, date, sortBy: reviewSortBy };
   switch (reviewSortBy) {
     case '최신 순':
       convertSortUrl = 'createdAt';
@@ -25,68 +20,23 @@ export const getReviewsUrl = () => {
       convertSortUrl = 'participantCount';
       break;
   }
-  let locationUrl = location === '지역 선택' ? '' : `&location=${location}`;
-  let dateUrl = date === '날짜 선택' ? '' : `&date=${date}`;
-  let subUrl = `${locationUrl}${dateUrl}`;
-  let reviewUrl = `type=${type}&sortOrder=desc&sortBy=${convertSortUrl}${subUrl}`;
-  let queryKeys: reviewQueryKeys = [['reviews'], { type, location, date, sortBy: reviewSortBy }];
-  return {
+  let reviewQueryKeys: reviewQueryKeys = [['reviews'], queryKeys];
+  let reviewScoresQueryKeys: reviewScoresQueryKeys = [['reviews', 'scores'], queryKeys];
+  let params: paramsType = {
     type,
-    location,
-    reviewSortBy,
-    reviewUrl,
-    queryKeys,
-    date,
-  };
-};
-
-export const getReviews = async ({
-  pageParam,
-  reviewUrl = 'type=DALLAEMFIT&sortOrder=desc&sortBy=createdAt',
-}: {
-  pageParam: number;
-  reviewUrl?: string;
-}): Promise<Review[]> => {
-  const limit = 10;
-  const offset = pageParam * limit;
-  const result = await fetcher.get(`reviews?limit=${limit}&offset=${offset}&${reviewUrl}`);
-  return result.data;
-};
-
-export const getScores = async (typeTab: GatheringType = 'DALLAEMFIT'): Promise<Points[]> => {
-  const result = await fetcher.get(`reviews/scores?type=${typeTab}`);
-  return result.data; //
-};
-
-export const useReviewPrefetchQuery = async () => {
-  const queryKeys = {
-    type: 'DALLAEMFIT',
-    location: '지역 선택',
-    sortBy: '최신 순',
-    date: '날짜 선택',
+    sortOrder: 'desc',
+    location: location === '지역 선택' ? undefined : location,
+    date: date === '날짜 선택' ? undefined : date,
+    sortBy: convertSortUrl,
   };
 
-  const queryClient = new QueryClient();
-
-  await Promise.all([
-    queryClient.prefetchInfiniteQuery({
-      queryKey: [['reviews'], queryKeys],
-      queryFn: ({ pageParam }) => getReviews({ pageParam }),
-      initialPageParam: 0,
-    }),
-    queryClient.prefetchQuery({
-      queryKey: [['reviews', 'scores'], queryKeys],
-      queryFn: () => getScores(),
-    }),
-  ]);
-
-  return queryClient;
+  return { params, reviewQueryKeys, reviewScoresQueryKeys };
 };
 
-export const useReviewsInfiniteQuery = (queryKey: reviewQueryKeys, reviewUrl: string) => {
+export const useReviewsInfiniteQuery = (queryKey: reviewQueryKeys, params: paramsType) => {
   return useInfiniteQuery({
     queryKey,
-    queryFn: ({ pageParam = 0 }) => getReviews({ pageParam, reviewUrl }),
+    queryFn: ({ pageParam = 0 }) => getReviews({ pageParam, params }),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length === 3 ? allPages.length : undefined;
     },
