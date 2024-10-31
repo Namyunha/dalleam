@@ -6,18 +6,15 @@ const fetcher = getInstance();
 
 export const getReviews = async ({
   pageParam,
-  params = { type: 'DALLAEMFIT', sortOrder: 'desc', sortBy: 'createdAt' },
+  params = { type: 'DALLAEMFIT', sortOrder: 'desc', sortBy: 'createdAt', limit: 10 },
 }: {
   pageParam: number;
   params?: paramsType;
 }): Promise<Review[]> => {
-  const limit = 10;
-  const offset = pageParam * limit;
   const encodedParams = {
     ...params,
     location: params.location ? encodeURIComponent(params.location) : undefined,
-    limit,
-    offset,
+    offset: pageParam * 10,
   };
 
   const result = await fetcher.get('reviews', { params: encodedParams });

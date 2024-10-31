@@ -19,6 +19,16 @@ export type Gathering = {
   canceledAt: string | null;
 };
 
+export type gatheringQueryKeys = [
+  ['gathering'],
+  {
+    type: GatheringType;
+    location?: LocationType;
+    sortBy?: SortType;
+    date?: string;
+  },
+];
+
 export type JoinedGathering = {
   teamId: string;
   id: number;

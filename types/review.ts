@@ -49,10 +49,15 @@ export type reviewScoresQueryKeys = [
   },
 ];
 
+export type sortBy = 'createdAt' | 'score' | 'participantCount' | 'dateTime' | 'registrationEnd';
+
 export type paramsType = {
+  id?: string;
   type: GatheringType;
   sortOrder: 'desc' | 'asc';
   location?: LocationType;
   date?: string;
-  sortBy: 'createdAt' | 'score' | 'participantCount';
+  createdBy?: number;
+  sortBy: sortBy;
+  limit: 10;
 };
