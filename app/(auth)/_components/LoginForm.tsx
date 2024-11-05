@@ -36,7 +36,6 @@ export default function LoginForm() {
   });
 
   const { setUser } = useUserStore();
-  const { setSavedUserId } = useSavedStore();
 
   const loginMutation = useMutation({
     mutationFn: login,
@@ -50,7 +49,7 @@ export default function LoginForm() {
     mutationFn: getUser,
     onSuccess: (user) => {
       setUser(user);
-      setSavedUserId(user.id);
+
       toast('로그인에 성공하였습니다.');
       const currentParams = new URLSearchParams(window.location.search);
       const redirectedFrom = currentParams.get('redirectedFrom');
