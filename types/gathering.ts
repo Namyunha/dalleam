@@ -28,6 +28,15 @@ export type gatheringQueryKeys = [
     date?: string;
   },
 ];
+export type savedGatheringQueryKeys = [
+  ['gathering', 'saved'],
+  {
+    type: GatheringType;
+    location?: LocationType;
+    sortBy?: SortType;
+    date?: string;
+  },
+];
 
 export type JoinedGathering = {
   teamId: string;

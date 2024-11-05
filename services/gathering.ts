@@ -1,9 +1,12 @@
 import { getGatherings } from '@/api/gathering';
-import { gatheringQueryKeys } from '@/types/gathering';
+import { gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
 import { paramsType } from '@/types/review';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export const useGatheringInfiniteQuery = (queryKey: gatheringQueryKeys, params: paramsType) => {
+export const useGatheringInfiniteQuery = (
+  queryKey: gatheringQueryKeys | savedGatheringQueryKeys,
+  params: paramsType,
+) => {
   return useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam = 0 }) => getGatherings({ pageParam, params }),

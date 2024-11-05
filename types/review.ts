@@ -58,6 +58,6 @@ export type paramsType = {
   location?: LocationType;
   date?: string;
   createdBy?: number;
-  sortBy: sortBy;
-  limit: 10;
+  sortBy?: sortBy;
+  limit?: 10;
 };
