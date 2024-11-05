@@ -68,7 +68,7 @@ export default function GatheringCard({ gathering }: Props) {
               </div>
             </div>
 
-            <Saved gatheringId={gathering.id} />
+            <Saved gathering={gathering} />
           </div>
           {/* progressBar */}
           <div className="flex items-center gap-6 px-4 pt-2 pb-4 mt-5 h-60pxr md:mt-0 md:px-6">

@@ -2,7 +2,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 
-import Saved from '../animation/saved/Saved';
+import Saved from '@/app/(list)/_components/saved/Saved';
 import ExpandLine from '../animation/expandLine/ExpandLine';
 import Profile from '../profile/Profile';
 import { formatDateTime } from '@/utils/gathering';
@@ -46,7 +46,7 @@ export default function Container({ gatheringDetails, participants }: Props) {
                 </span>
               </div>
             </div>
-            <Saved gatheringId={gatheringDetails.id} />
+            <Saved gathering={gatheringDetails} />
           </div>
           <VectorIcon className="w-full" />
         </div>

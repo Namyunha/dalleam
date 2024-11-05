@@ -15,8 +15,12 @@ const isSelected = (currentPathname: string, href: string) => currentPathname ==
 
 export default function NavMenu() {
   const pathname = usePathname();
-  const { saved, hydrated: savedStoreHydrated } = useSavedStore();
+  const { hydrated: savedStoreHydrated, savedGatherings } = useSavedStore();
   const { user, hydrated: userStoreHydrated } = useUserStore();
+
+  const filteredList = savedGatherings.filter(
+    (savedGathering) => savedGathering.userId === user?.id || savedGathering.userId === 1,
+  );
 
   return (
     <>
@@ -25,8 +29,7 @@ export default function NavMenu() {
           link.href === '/saved-gatherings' &&
           savedStoreHydrated &&
           userStoreHydrated &&
-          user &&
-          saved[user.id]?.length > 0
+          filteredList.length > 0
         ) {
           return (
             <Link className="flex items-center" key={link.href} href={link.href}>
@@ -34,7 +37,7 @@ export default function NavMenu() {
                 {link.name}
               </span>
               <div className="ml-5pxr rounded-[8.5px] min-w-27pxr h-16pxr px-7pxr bg-gray-900 text-white text-xs text-center">
-                {saved[user.id].length}
+                {filteredList?.length}
               </div>
             </Link>
           );

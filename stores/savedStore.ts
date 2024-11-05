@@ -1,54 +1,28 @@
+import { Gathering } from '@/types/gathering';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type Saved = {
-  [userId: number]: number[];
+export type SavedGathering = {
+  userId?: number;
+  savedId?: number;
+  gathering: Gathering;
+  savedTime: Date;
 };
-
 type Savedstore = {
-  saved: Saved; // null 대신 Saved로 설정
-  setSaved: (userId: number, gatheringId: number) => void;
-  cancelSaved: (userId: number, gatheringId: number) => void;
-  setSavedUserId: (userId: number) => void;
+  savedGatherings: SavedGathering[];
+  setSavedGathering: (gatherings: SavedGathering[]) => void;
   hydrated: boolean;
   setHydrated: (hydrated: boolean) => void;
 };
-
 const useSavedStore = create(
   persist<Savedstore>(
     (set) => ({
-      saved: {}, // 초기값을 빈 객체로 설정
-      setSaved: (userId: number, gatheringId: number) =>
-        set((state) => {
-          const currentSaved = state.saved;
-          const updateSaved = new Set([...(currentSaved[userId] || []), gatheringId]);
+      savedGatherings: [],
+      setSavedGathering: (gatherings) =>
+        set(() => {
           return {
-            saved: {
-              ...currentSaved, // 기존 상태 유지
-              [userId]: [...updateSaved],
-            },
+            savedGatherings: gatherings,
           };
-        }),
-      cancelSaved: (userId: number, gatheringId: number) =>
-        set((state) => {
-          const currentSaved = state.saved;
-          const updatedSaved = currentSaved[userId].filter((id) => id !== gatheringId);
-          return { saved: { [userId]: updatedSaved } }; // saved 상태를 업데이트
-        }),
-      // 로그인 전에 찜한 경우(아직 userId가 없을 때)
-      setSavedUserId: (userId: number) =>
-        set((state) => {
-          const currentSaved = state.saved;
-          if (currentSaved[0]) {
-            const currentUserSaved = currentSaved[userId] || [];
-            const updateSaved = new Set([...currentSaved[0], ...currentUserSaved]);
-            return {
-              saved: {
-                [userId]: [...updateSaved],
-              },
-            };
-          }
-          return {};
         }),
       setHydrated: (hydrated: boolean) => set({ hydrated }),
       hydrated: false,
