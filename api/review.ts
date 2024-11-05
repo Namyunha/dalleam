@@ -1,0 +1,27 @@
+import { GatheringType } from '@/types/gathering';
+import { paramsType, Points, Review } from '@/types/review';
+import { getInstance } from '@/utils/axios';
+
+const fetcher = getInstance();
+
+export const getReviews = async ({
+  pageParam,
+  params = { type: 'DALLAEMFIT', sortOrder: 'desc', sortBy: 'createdAt', limit: 10 },
+}: {
+  pageParam: number;
+  params?: paramsType;
+}): Promise<Review[]> => {
+  const encodedParams = {
+    ...params,
+    location: params.location ? encodeURIComponent(params.location) : undefined,
+    offset: pageParam * 10,
+  };
+
+  const result = await fetcher.get('reviews', { params: encodedParams });
+  return result.data;
+};
+
+export const getScores = async (typeTab: GatheringType = 'DALLAEMFIT'): Promise<Points[]> => {
+  const result = await fetcher.get(`reviews/scores?type=${typeTab}`);
+  return result.data; //
+};
