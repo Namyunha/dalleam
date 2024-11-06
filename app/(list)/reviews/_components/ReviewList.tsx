@@ -50,11 +50,9 @@ export default function ReviewList() {
   if (isError) return <div>데이터를 불러올 수 없습니다.</div>;
   if (!data?.pages[0].length)
     return (
-      <DeferredComponent>
-        <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
-          불러올 데이터가 없습니다.
-        </div>
-      </DeferredComponent>
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        불러올 데이터가 없습니다.
+      </div>
     );
   if (isLoading)
     return (

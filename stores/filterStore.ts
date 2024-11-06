@@ -1,17 +1,17 @@
 import { create } from 'zustand';
-import { GatheringType, LocationType, sortType } from '@/lib/definition';
+import { GatheringType, LocationType, SortType } from '@/types/gathering';
 
 type FilterState = {
   location: LocationType;
   date: string;
-  sortBy: sortType;
-  reviewSortBy: sortType;
+  sortBy: SortType;
+  reviewSortBy: SortType;
   type: GatheringType;
   setType: (type: GatheringType) => void;
   setLocation: (location: LocationType) => void;
   setDate: (date: string) => void;
-  setSortBy: (orderBy: sortType) => void;
-  setReviewSortBy: (orderBy: sortType) => void;
+  setSortBy: (orderBy: SortType) => void;
+  setReviewSortBy: (orderBy: SortType) => void;
   resetFilters: () => void; // 리셋 함수 추가
 };
 
@@ -24,8 +24,8 @@ const useFilterStore = create<FilterState>((set) => ({
   setType: (type: GatheringType) => set({ type }),
   setLocation: (location: LocationType) => set({ location }),
   setDate: (date: string) => set({ date }),
-  setSortBy: (sortBy: sortType) => set({ sortBy }),
-  setReviewSortBy: (reviewSortBy: sortType) => set({ reviewSortBy }),
+  setSortBy: (sortBy: SortType) => set({ sortBy }),
+  setReviewSortBy: (reviewSortBy: SortType) => set({ reviewSortBy }),
   resetFilters: () =>
     set({
       location: '지역 선택',
