@@ -9,14 +9,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import GatheringLocation from './GatheringLocation';
 import { gatheringSchema } from '@/constants/formSchema';
 import CloseIcon from '@/public/icons/gathering/close.svg';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postGathering } from '@/lib/data';
 import useFilterStore from '@/stores/filterStore';
-import { toast } from '@/components/toast/ToastManager';
+import { useGatheringMutate } from '@/services/gathering';
+import { useParams } from '@/hooks/useParams';
 
 export default function GatheringModal({ onClose }: { onClose: () => void }) {
+  const { gatheringQueryKeys } = useParams({ isGathering: true });
+  const { mutate } = useGatheringMutate(gatheringQueryKeys, onClose);
   const { resetFilters } = useFilterStore();
-  const queryClient = useQueryClient();
   const {
     control,
     handleSubmit,
@@ -24,27 +24,9 @@ export default function GatheringModal({ onClose }: { onClose: () => void }) {
   } = useForm<gatheringSchema>({ defaultValues: { capacity: 5 } });
 
   const onSubmitHandler: SubmitHandler<gatheringSchema> = async (gathering) => {
-    mutate.mutate({ gathering });
+    await mutate({ gathering });
+    resetFilters();
   };
-
-  const mutate = useMutation({
-    mutationFn: postGathering,
-    onSuccess: (_, variables) => {
-      const { gathering } = variables;
-      queryClient.invalidateQueries({
-        queryKey: [
-          'gatherings',
-          '지역 선택',
-          '날짜 선택',
-          '마감 임박',
-          gathering.type === 'WORKATION' ? 'WORKATION' : 'DALLAEMFIT',
-        ],
-      });
-      resetFilters();
-      toast('모임이 생성되었습니다.');
-      onClose();
-    },
-  });
 
   return (
     <div

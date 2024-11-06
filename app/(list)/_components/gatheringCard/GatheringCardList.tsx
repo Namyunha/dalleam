@@ -12,7 +12,6 @@ export default function GatheringCardList() {
   const { data, fetchNextPage, isLoading, isError, isFetchingNextPage, hasNextPage } =
     useGatheringInfiniteQuery(gatheringQueryKeys, params);
   const observerRef = useInfiniteObserver(fetchNextPage, { threshold: 0.2 });
-
   return (
     <div className="flex flex-col items-start gap-6 self-stretch">
       <FilterTab isReviewPage={false} />
