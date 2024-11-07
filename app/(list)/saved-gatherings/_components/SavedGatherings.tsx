@@ -2,7 +2,7 @@ import MainTab from '@/components/tab/MainTab';
 import SubTab from '@/components/tab/SubTab';
 import Tabs from '@/components/tab/Tabs';
 import React from 'react';
-import SavedGatheringCardList from '@/app/gatherings/_components/SavedGatheringCardList';
+import SavedGatheringCardList from './SavedGatheringCardList';
 import Header from './Header';
 
 export default function SavedGatherings() {

@@ -1,15 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
-import { Metadata } from 'next';
-
-import Container from '@/components/container/Container';
-import DeadlineBadge from '@/app/(list)/_components/gatheringCard/DeadlineBadge';
-import ActionButtons from '../_components/ActionButtons';
-import ReviewDetailCardList from '../_components/review/ReviewDetailCardList';
-
 import { fetchDetailGathering, fetchDetailReviews, fetchJoinedGatheringIds } from '@/lib/data';
-import { getMetadata } from '@/constants/metadata';
 import { mockGatheringReviews } from '@/lib/placeholder-data';
+import DeadlineBadge from '@/app/(list)/_components/gatheringCard/DeadlineBadge';
+import GatheringDetailInfo from '../_components/GatheringDetailInfo';
+import ActionButtons from '../_components/ActionButtons';
+import ReviewDetailCardList from '../_components/ReviewDetailCardList';
 
 type Props = {
   params: {
@@ -17,28 +13,11 @@ type Props = {
   };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id;
-
-  const { data: gatheringData, errorMessage: gatheringErrorMessage } =
-    await fetchDetailGathering(id);
-
-  return getMetadata({
-    title: `${gatheringData?.location} ${gatheringData?.type} 모집`,
-    description: `오는 ${gatheringData?.dateTime.split('T')[0]}에 ${gatheringData?.location}에서 열리는 모임에 참여하세요. 현재 ${gatheringData?.capacity}명 중 ${gatheringData?.participantCount}명이 참여 중입니다.`,
-    asPath: `/gatherings/${id}`,
-    ogImage: gatheringData?.image,
-  });
-}
-
 const GatheringDetail = async ({ params }: Props) => {
   const id = Number(params.id);
-
   const { data: gatheringData, errorMessage: gatheringErrorMessage } =
     await fetchDetailGathering(id);
-
   const { data: reviewData, errorMessage: reviewErrorMessage } = await fetchDetailReviews(id);
-
   const { data: joinedGathering, errorMessage } = await fetchJoinedGatheringIds(id);
 
   if (gatheringErrorMessage) {
@@ -65,12 +44,9 @@ const GatheringDetail = async ({ params }: Props) => {
     return <p>모임 정보가 존재하지 않습니다.</p>;
   }
 
-  const gatheringHost = gatheringData.createdBy;
-  const isFull = gatheringData.capacity === gatheringData.participantCount;
-
   const actionButtonProps = {
-    isFull,
-    hostId: gatheringHost,
+    isFull: gatheringData.capacity === gatheringData.participantCount,
+    hostId: gatheringData.createdBy,
     gatheringId: id,
     joinedGatheringIds: joinedGathering.map(({ userId }) => userId),
   };
@@ -90,7 +66,7 @@ const GatheringDetail = async ({ params }: Props) => {
               />
               <DeadlineBadge registrationEnd={gatheringData.registrationEnd} />
             </div>
-            <Container gatheringDetails={gatheringData} participants={joinedGathering} />
+            <GatheringDetailInfo gatheringDetails={gatheringData} participants={joinedGathering} />
           </div>
           <div className="p-6 bg-white border-t-2 border-gray-200 border-solid space-y-10pxr lg:space-y-4 w-343pxr md:w-696pxr md:h-820pxr lg:w-996pxr lg:h-687pxr">
             <p className="text-base font-semibold text-left text-gray-900 md:text-lg ">

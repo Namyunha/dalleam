@@ -7,7 +7,7 @@ import { useParams } from '@/hooks/useParams';
 import { useInfiniteObserver } from '@/hooks/useInfiniteObserver';
 import FilterTab from '@/components/tab/FilterTab';
 
-export default function GatheringCardList() {
+export default function GatheringCList() {
   const { gatheringQueryKeys, params } = useParams({ isGathering: true });
   const { data, fetchNextPage, isLoading, isError, isFetchingNextPage, hasNextPage } =
     useGatheringInfiniteQuery(gatheringQueryKeys, params);

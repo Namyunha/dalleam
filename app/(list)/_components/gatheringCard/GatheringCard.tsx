@@ -7,21 +7,18 @@ import Check from '/public/icons/gathering/ic_check.svg';
 import Arrow from '/public/icons/gathering/arrow_right.svg';
 import Bye from '/public/icons/gathering/bye.svg';
 
-import { Gathering } from '@/lib/definition';
-import ExpandLine from '../expandLine/ExpandLine';
-import Saved from '../saved/Saved';
+import { Gathering } from '@/types/gathering';
+import ExpandLine from '../ExpandLine';
+import Saved from '../Saved';
 import { formatDateTime } from '@/utils/gathering';
 import DeadlineBadge from './DeadlineBadge';
 
-type Props = {
-  gathering: Gathering;
-};
-
-export default function GatheringCard({ gathering }: Props) {
+export default function GatheringCard({ gathering }: { gathering: Gathering }) {
   const { formattedDate, formattedTime } = formatDateTime(gathering.dateTime) ?? {
     formattedDate: '',
     formattedTime: '',
   };
+
   // 개설확정 충족 조건
   const minParticipants = gathering.participantCount >= 5;
 

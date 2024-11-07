@@ -3,7 +3,6 @@ import React from 'react';
 import GatheringCard from '@/app/(list)/_components/gatheringCard/GatheringCard';
 import useSavedStore from '@/stores/savedStore';
 import useUserStore from '@/stores/userStore';
-import DeferredComponent from '@/components/DeferredComponent';
 import useFilterStore from '@/stores/filterStore';
 
 export default function SavedGatheringCardList() {
@@ -21,11 +20,9 @@ export default function SavedGatheringCardList() {
 
   if (!filteredList.length)
     return (
-      <DeferredComponent>
-        <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
-          아직 찜한 모임이 없어요
-        </div>
-      </DeferredComponent>
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        아직 찜한 모임이 없어요
+      </div>
     );
 
   return (

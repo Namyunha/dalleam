@@ -4,7 +4,7 @@ import './Calendar.css';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { format } from 'date-fns';
-import DallaemCalendar from '../calendar/DallaemCalendar';
+import DallaemCalendar from '../DallaemCalendar';
 import Arrow from '/public/icons/gathering/arrow_down.svg';
 import useFilterStore from '@/stores/filterStore';
 

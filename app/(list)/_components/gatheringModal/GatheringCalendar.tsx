@@ -5,7 +5,7 @@ import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 import Input from '@/components/input/Input';
 import { convertDate } from '@/utils/convertDate';
-import DallaemCalendar from '@/components/calendar/DallaemCalendar';
+import DallaemCalendar from '@/components/DallaemCalendar';
 import { Controller } from 'react-hook-form';
 import { gatheringRules } from '@/constants/formSchema';
 import GatheringTimes from './GatheringTimes';

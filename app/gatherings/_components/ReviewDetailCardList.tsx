@@ -4,14 +4,13 @@ import React, { useState } from 'react';
 import ReviewDetailCard from './ReviewDetailCard';
 
 import { Review } from '@/lib/definition';
-import CustomPagination from '../Pagination';
+import CustomPagination from './Pagination';
 
 const REVIEWS_PER_PAGE = 3;
 
 const ReviewDetailCardList = ({ reviews }: { reviews: Review[] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPage = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
-
   const currentReviews = reviews.slice(
     (currentPage - 1) * REVIEWS_PER_PAGE,
     currentPage * REVIEWS_PER_PAGE,
