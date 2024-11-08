@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import GatheringReview from './GatheringReview';
 
-import { Review } from '@/lib/definition';
+import { Review } from '@/types/review';
 import CustomPagination from './Pagination';
 
 const REVIEWS_PER_PAGE = 3;

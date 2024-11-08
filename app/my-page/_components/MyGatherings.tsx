@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import useModal from '@/hooks/useModal';
 import { getInstance } from '@/utils/axios';
-import { JoinedGathering } from '@/lib/definition';
+import { JoinedGathering } from '@/types/gathering';
 import useModalType from '@/stores/useModalType';
 
 import Modal from '@/components/Modal';

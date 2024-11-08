@@ -7,7 +7,7 @@ import Card from '@/components/card/Card';
 import Modal from '@/components/Modal';
 import Review from '@/components/modal/review/Review';
 
-import { JoinedGathering } from '@/lib/definition';
+import { JoinedGathering } from '@/types/gathering';
 import { getInstance } from '@/utils/axios';
 import useModal from '@/hooks/useModal';
 

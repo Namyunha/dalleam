@@ -5,7 +5,7 @@ import Profile from '/public/icons/DefaultMyProfile.svg';
 import Stroke from '/public/icons/gathering/line.svg';
 
 import { format } from 'date-fns';
-import { Review } from '@/lib/definition';
+import { Review } from '@/types/review';
 
 export default function GatheringReview({ review }: { review: Review }) {
   const formattedDate = format(new Date(review.createdAt), 'yyyy.MM.dd');
