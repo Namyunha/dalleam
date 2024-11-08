@@ -1,8 +1,13 @@
-import { getGatherings, postGathering } from '@/api/gathering';
+import {
+  getGatheringParticipants,
+  getGatherings,
+  postGathering,
+  getGatheringDetail,
+} from '@/api/gathering';
 import { toast } from '@/components/toast/ToastManager';
-import { gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
+import { Gathering, gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
 import { paramsType } from '@/types/review';
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGatheringInfiniteQuery = (
   queryKey: gatheringQueryKeys | savedGatheringQueryKeys,
@@ -33,5 +38,19 @@ export const useGatheringMutate = (
       toast('모임이 생성되었습니다.');
       onClose();
     },
+  });
+};
+
+export const useGatheringDetailQuery = (id: number) => {
+  return useQuery({
+    queryKey: [['gathering'], { id }],
+    queryFn: async (): Promise<Gathering> => await getGatheringDetail(id),
+  });
+};
+
+export const useGatheringParticipantsQuery = (id: number) => {
+  return useQuery({
+    queryKey: [['gathering', 'participants'], { id }],
+    queryFn: async () => getGatheringParticipants(id),
   });
 };

@@ -8,7 +8,7 @@ import Bye from '/public/icons/gathering/bye.svg';
 import Stroke from '/public/icons/gathering/line.svg';
 
 import Button from '../Button';
-import ChipState from './ChipState';
+import ChipState from '../chip/ChipState';
 
 import { Gathering } from '@/lib/definition';
 import { formatDateTime, isDeadlinePassed } from '@/utils/gathering';

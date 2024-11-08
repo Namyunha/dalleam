@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
-import Card from '../../card/Card';
-import Modal from '../../Modal';
-import Review from '../../modal/review/Review';
+import Card from '@/components/card/Card';
+import Modal from '@/components/Modal';
+import Review from '@/components/modal/review/Review';
 
 import { JoinedGathering } from '@/lib/definition';
 import { getInstance } from '@/utils/axios';

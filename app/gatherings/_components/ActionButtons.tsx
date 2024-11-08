@@ -104,56 +104,70 @@ const ActionButtons = ({
       });
   };
 
-  let content;
-  let text = '국내 최고 웰니스 전문가와 프로그램을 통해 지친 몸과 마음을 회복해봐요';
-  if (user && hostId === userId) {
-    text = '모임을 공유해서 더 많은 사람들이 참여할 수 있도록 독려해봐요';
-    content = (
-      <div className="space-x-2 flex">
-        <Button
-          className="text-sm  sm:w-1/2 md:w-[110px] h-[44px]"
-          fillState="full"
-          onClick={() => cancelGathering({ gatheringId, type })}
-        >
-          {isGatheringCanceling ? '모임 취소중..' : '모임 취소하기'}
-        </Button>
-        <Button
-          className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
-          fillState="empty"
-          onClick={handleShare}
-        >
-          공유하기
-        </Button>
-      </div>
-    );
-  } else if (!isJoined && !isFull) {
-    content = (
-      <Button className="text-sm w-[115px] h-[44px]" fillState="full" onClick={handleJoin}>
-        {isJoining ? '참여 요청중..' : '참여하기'}
-      </Button>
-    );
-  } else if (user && isJoined) {
-    content = (
-      <Button
-        className="text-sm w-[115px] h-[44px]"
-        fillState="empty"
-        onClick={() => cancelParticipation({ gatheringId })}
-      >
-        {isCanceling ? '참여 취소중..' : '참여 취소하기'}
-      </Button>
-    );
-  } else if (isFull) {
-    content = (
-      <Button
-        className="text-sm w-[115px] h-[44px] disabled:cursor-not-allowed"
-        variant="gray"
-        fillState="full"
-        disabled={true}
-      >
-        참여하기
-      </Button>
-    );
-  }
+  const content = (
+    <Button
+      className="text-sm  sm:w-1/2 md:w-[110px] h-[44px]"
+      fillState="full"
+      onClick={() => cancelGathering({ gatheringId, type })}
+    >
+      {isGatheringCanceling ? '모임 취소중..' : '모임 취소하기'}
+    </Button>
+  );
+
+  // let content;
+  // let text = '국내 최고 웰니스 전문가와 프로그램을 통해 지친 몸과 마음을 회복해봐요';
+  // if (user && hostId === userId) {
+  //   text = '모임을 공유해서 더 많은 사람들이 참여할 수 있도록 독려해봐요';
+
+  //   content = (
+  //     <div className="space-x-2 flex">
+  //       <Button
+  //         className="text-sm  sm:w-1/2 md:w-[110px] h-[44px]"
+
+  //         fillState="full"
+  //         onClick={() => cancelGathering({ gatheringId, type })}
+  //       >
+  //         {isGatheringCanceling ? '모임 취소중..' : '모임 취소하기'}
+  //       </Button>
+
+  //       <Button
+  //         className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
+
+  //         fillState="empty"
+  //         onClick={handleShare}
+  //       >
+  //         공유하기
+  //       </Button>
+  //     </div>
+  //   );
+  // } else if (!isJoined && !isFull) {
+  //   content = (
+  //     <Button className="text-sm w-[115px] h-[44px]" fillState="full" onClick={handleJoin}>
+  //       {isJoining ? '참여 요청중..' : '참여하기'}
+  //     </Button>
+  //   );
+  // } else if (user && isJoined) {
+  //   content = (
+  //     <Button
+  //       className="text-sm w-[115px] h-[44px]"
+  //       fillState="empty"
+  //       onClick={() => cancelParticipation({ gatheringId })}
+  //     >
+  //       {isCanceling ? '참여 취소중..' : '참여 취소하기'}
+  //     </Button>
+  //   );
+  // } else if (isFull) {
+  //   content = (
+  //     <Button
+  //       className="text-sm w-[115px] h-[44px] disabled:cursor-not-allowed"
+  //       variant="gray"
+  //       fillState="full"
+  //       disabled={true}
+  //     >
+  //       참여하기
+  //     </Button>
+  //   );
+  // }
 
   return (
     <>
@@ -166,10 +180,10 @@ const ActionButtons = ({
               더 건강한 나와 팀을 위한 프로그램 🏃‍️️
             </p>
             <p className="text-xs font-medium text-left text-gray-700 w-[178px] md:w-full">
-              {text}
+              {/* {text} */}
             </p>
           </div>
-          {content}
+          {/* {content} */}
         </div>
       </div>
       <Modal ref={modalRef}>

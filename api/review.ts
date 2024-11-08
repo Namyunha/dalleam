@@ -23,5 +23,12 @@ export const getReviews = async ({
 
 export const getScores = async (typeTab: GatheringType = 'DALLAEMFIT'): Promise<Points[]> => {
   const result = await fetcher.get(`reviews/scores?type=${typeTab}`);
-  return result.data; //
+  return result.data;
+};
+
+export const getGatheringReviews = async (id: number) => {
+  const result = await fetcher.get<Review[]>('reviews', {
+    params: { gatheringId: id },
+  });
+  return result.data;
 };

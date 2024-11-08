@@ -8,10 +8,10 @@ import { getInstance } from '@/utils/axios';
 import { JoinedGathering } from '@/lib/definition';
 import useModalType from '@/stores/useModalType';
 
-import Modal from '../../Modal';
-import Review from '../../modal/review/Review';
-import CheckCancel from '../../modal/checkCancel/CheckCancel';
-import Card from '../../card/Card';
+import Modal from '@/components/Modal';
+import Review from '@/components/modal/review/Review';
+import CheckCancel from '@/components/modal/checkCancel/CheckCancel';
+import Card from '@/components/card/Card';
 
 type Props = {
   initialMyGatherings: JoinedGathering[];

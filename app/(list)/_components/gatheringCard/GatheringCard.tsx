@@ -6,7 +6,6 @@ import Person from '/public/icons/gathering/person.svg';
 import Check from '/public/icons/gathering/ic_check.svg';
 import Arrow from '/public/icons/gathering/arrow_right.svg';
 import Bye from '/public/icons/gathering/bye.svg';
-
 import { Gathering } from '@/types/gathering';
 import ExpandLine from '../ExpandLine';
 import Saved from '../Saved';

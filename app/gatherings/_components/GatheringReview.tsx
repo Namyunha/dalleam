@@ -7,7 +7,7 @@ import Stroke from '/public/icons/gathering/line.svg';
 import { format } from 'date-fns';
 import { Review } from '@/lib/definition';
 
-const ReviewDetailCard = ({ review }: { review: Review }) => {
+export default function GatheringReview({ review }: { review: Review }) {
   const formattedDate = format(new Date(review.createdAt), 'yyyy.MM.dd');
 
   return (
@@ -41,6 +41,4 @@ const ReviewDetailCard = ({ review }: { review: Review }) => {
       <Stroke className="w-full" />
     </div>
   );
-};
-
-export default ReviewDetailCard;
+}

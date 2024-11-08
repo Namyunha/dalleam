@@ -1,5 +1,5 @@
 import { gatheringSchema } from '@/constants/formSchema';
-import { Gathering } from '@/types/gathering';
+import { Gathering, Participant } from '@/types/gathering';
 import { paramsType } from '@/types/review';
 import { getInstance } from '@/utils/axios';
 
@@ -21,9 +21,21 @@ export const getGatherings = async ({
   return result.data;
 };
 
+export const getGatheringDetail = async (id: number) => {
+  const result = await fetcher.get<Gathering>(`gatherings/${id}`);
+  return result.data;
+};
+
 export const postGathering = async ({ gathering }: { gathering: gatheringSchema }) => {
-  const response = await fetcher.post('/gatherings', gathering, {
+  const result = await fetcher.post('/gatherings', gathering, {
     headers: { 'Content-Type': 'multipart/form-data', charset: 'utf-8' },
   });
-  return response.data;
+  return result.data;
+};
+
+export const getGatheringParticipants = async (id: number) => {
+  const result = await fetcher.get<Participant[]>(`gatherings/${id}/participants`, {
+    params: { limit: 100 },
+  });
+  return result.data;
 };

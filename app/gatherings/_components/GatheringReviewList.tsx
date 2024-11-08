@@ -1,14 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 
-import ReviewDetailCard from './ReviewDetailCard';
+import GatheringReview from './GatheringReview';
 
 import { Review } from '@/lib/definition';
 import CustomPagination from './Pagination';
 
 const REVIEWS_PER_PAGE = 3;
 
-const ReviewDetailCardList = ({ reviews }: { reviews: Review[] }) => {
+export default function GatheringReviewList({ reviews }: { reviews: Review[] }) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPage = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
   const currentReviews = reviews.slice(
@@ -19,14 +19,8 @@ const ReviewDetailCardList = ({ reviews }: { reviews: Review[] }) => {
   return (
     <div className="space-y-4 bg-white w-full">
       {currentReviews.map((review) => (
-        <ReviewDetailCard review={review} key={review.id} />
+        <GatheringReview review={review} key={review.id} />
       ))}
-
-      {reviews.length === 0 && (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-sm text-gray-500">아직 리뷰가 없어요</p>
-        </div>
-      )}
       <CustomPagination
         currentPage={currentPage}
         totalPages={totalPage}
@@ -34,6 +28,4 @@ const ReviewDetailCardList = ({ reviews }: { reviews: Review[] }) => {
       />
     </div>
   );
-};
-
-export default ReviewDetailCardList;
+}

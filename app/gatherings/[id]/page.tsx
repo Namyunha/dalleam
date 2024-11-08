@@ -1,11 +1,12 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
-import { fetchDetailGathering, fetchDetailReviews, fetchJoinedGatheringIds } from '@/lib/data';
-import { mockGatheringReviews } from '@/lib/placeholder-data';
 import DeadlineBadge from '@/app/(list)/_components/gatheringCard/DeadlineBadge';
 import GatheringDetailInfo from '../_components/GatheringDetailInfo';
 import ActionButtons from '../_components/ActionButtons';
-import ReviewDetailCardList from '../_components/ReviewDetailCardList';
+import GatheringReviewList from '../_components/GatheringReviewList';
+import { useGatheringDetailQuery, useGatheringParticipantsQuery } from '@/services/gathering';
+import { useGatheringReviewsQuery } from '@/services/reviews';
 
 type Props = {
   params: {
@@ -13,42 +14,71 @@ type Props = {
   };
 };
 
-const GatheringDetail = async ({ params }: Props) => {
+export default function GatheringDetail({ params }: Props) {
   const id = Number(params.id);
-  const { data: gatheringData, errorMessage: gatheringErrorMessage } =
-    await fetchDetailGathering(id);
-  const { data: reviewData, errorMessage: reviewErrorMessage } = await fetchDetailReviews(id);
-  const { data: joinedGathering, errorMessage } = await fetchJoinedGatheringIds(id);
 
-  if (gatheringErrorMessage) {
+  const {
+    status: gatheringDetailStatus,
+    data: gatheringDetailData,
+    error: gatheringDetailError,
+    isFetching: gatheringDetailIsFetching,
+  } = useGatheringDetailQuery(id);
+
+  const {
+    status: gatheringReviewsStatus,
+    data: gatheringReviewsData,
+    error: gatheringReviewsError,
+    isFetching: gatheringReviewsIsFetching,
+  } = useGatheringReviewsQuery(id);
+
+  const {
+    status: gatheringParticipantsStatus,
+    data: gatheringParticipantsData,
+    error: gatheringParticipantsError,
+    isFetching: gatheringParticipantsIsFetching,
+  } = useGatheringParticipantsQuery(id);
+
+  console.log('gatheringDetailData = ', gatheringDetailData);
+  console.log('reviewData = ', gatheringReviewsData);
+  console.log('gatheringParticipantsData = ', gatheringParticipantsData);
+
+  if (gatheringDetailStatus === 'error') {
     return (
       <div className="font-semibold text-red-500">
-        <p>{gatheringErrorMessage}</p>
+        <p>{gatheringDetailError.message}</p>
       </div>
     );
   }
 
-  if (reviewErrorMessage) {
+  if (gatheringReviewsStatus === 'error') {
     return (
       <div className="font-semibold text-red-500">
-        <p>{reviewErrorMessage}</p>
+        <p>{gatheringReviewsError.message}</p>
       </div>
     );
   }
 
-  if (!joinedGathering) {
-    return <p>참여자 목록이 존재하지 않습니다.</p>;
+  if (!gatheringParticipantsData) {
+    return (
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        참여자 목록이 존재하지 않습니다.
+      </div>
+    );
   }
 
-  if (!gatheringData) {
-    return <p>모임 정보가 존재하지 않습니다.</p>;
+  if (!gatheringDetailData) {
+    return (
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        모임 정보가 존재하지 않습니다.
+      </div>
+    );
   }
 
   const actionButtonProps = {
-    isFull: gatheringData.capacity === gatheringData.participantCount,
-    hostId: gatheringData.createdBy,
+    isFull: gatheringDetailData.capacity === gatheringDetailData.participantCount,
+    hostId: gatheringDetailData.createdBy,
     gatheringId: id,
-    joinedGatheringIds: joinedGathering.map(({ userId }) => userId),
+    joinedGatheringIds: gatheringParticipantsData.map(({ userId }) => userId),
   };
 
   return (
@@ -58,28 +88,31 @@ const GatheringDetail = async ({ params }: Props) => {
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="relative w-343pxr h-180pxr md:w-340pxr md:h-240pxr lg:w-486pxr lg:h-270pxr">
               <Image
-                src={gatheringData.image || '/card-image2.png'}
-                alt={`참여할 수 있는 ${gatheringData.type} 모임`}
+                src={gatheringDetailData.image || '/card-image2.png'}
+                alt={`참여할 수 있는 ${gatheringDetailData.type} 모임`}
                 fill
                 className="object-cover rounded-3xl"
                 priority
               />
-              <DeadlineBadge registrationEnd={gatheringData.registrationEnd} />
+              <DeadlineBadge registrationEnd={gatheringDetailData.registrationEnd} />
             </div>
-            <GatheringDetailInfo gatheringDetails={gatheringData} participants={joinedGathering} />
+            <GatheringDetailInfo
+              gatheringDetails={gatheringDetailData}
+              participants={gatheringParticipantsData}
+            />
           </div>
           <div className="p-6 bg-white border-t-2 border-gray-200 border-solid space-y-10pxr lg:space-y-4 w-343pxr md:w-696pxr md:h-820pxr lg:w-996pxr lg:h-687pxr">
             <p className="text-base font-semibold text-left text-gray-900 md:text-lg ">
               이용자들은 이 프로그램을 이렇게 느꼈어요!
             </p>
             {/* 리뷰 데이터가 없으면 목록을 표시하지 않음 */}
-            {reviewData ? (
-              <ReviewDetailCardList reviews={mockGatheringReviews} />
+            {gatheringReviewsData && gatheringReviewsData?.length > 0 ? (
+              <GatheringReviewList reviews={gatheringReviewsData} />
             ) : (
               <div className="flex items-center justify-center h-full min-h-500pxr md:min-h-696pxr">
-                <p className="h-10 text-sm font-medium text-center text-gray-500">
+                <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
                   아직 리뷰가 없어요
-                </p>
+                </div>
               </div>
             )}
           </div>
@@ -88,6 +121,4 @@ const GatheringDetail = async ({ params }: Props) => {
       <ActionButtons {...actionButtonProps} />
     </>
   );
-};
-
-export default GatheringDetail;
+}

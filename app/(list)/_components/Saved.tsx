@@ -29,13 +29,6 @@ export default function Saved({ gathering }: { gathering: Gathering }) {
     const addedGatherings = [...savedGatherings, savedInfo];
     !result ? setSavedGathering(addedGatherings) : setSavedGathering(removedGatherings);
   };
-  console.log('diff = ', new Date(gathering.registrationEnd).getTime() - new Date().getTime());
-
-  // if (!(new Date(gathering.registrationEnd).getTime() - new Date().getTime() > 0))
-  //   return
-  // <>
-  //  <Bye className="size-12 z-30" />;
-  // </>
 
   if (new Date(gathering.registrationEnd).getTime() - new Date().getTime() < 0) {
     return (
