@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
 import useUserStore from '@/stores/userStore';
-import Profile from '../profile/Profile';
-import Modal from '../Modal';
+import Profile from '@/components/profile/Profile';
+import Modal from '@/components/Modal';
 import useModal from '@/hooks/useModal';
-import ModifyProfile from '../modal/modifyProfile/ModifyProfile';
+import ModifyProfile from '@/components/modal/modifyProfile/ModifyProfile';
 
 import Mobile from '/public/icons/profileBg/mobile.svg';
 import Tablet from '/public/icons/profileBg/tablet.svg';
