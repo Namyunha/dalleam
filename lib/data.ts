@@ -1,6 +1,6 @@
 // fetcher 함수 작성 파일
 import { getInstance } from '@/utils/axios';
-import { User } from './definition';
+import { User } from '@/types/user';
 import { gatheringSchema } from '@/constants/formSchema';
 
 export const postGathering = async ({ gathering }: { gathering: gatheringSchema }) => {

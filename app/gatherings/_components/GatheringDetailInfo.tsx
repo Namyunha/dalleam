@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import Saved from '@/app/(list)/_components/Saved';
+import Saved from '@/app/_components/Saved';
 import ExpandLine from './ExpandLine';
 import Profile from '@/components/profile/Profile';
 import { formatDateTime } from '@/utils/gathering';
-import { Gathering, Participant } from '@/lib/definition';
+import { Gathering, Participant } from '@/types/gathering';
 import CountAnimation from './Count';
 
 import VectorIcon from '/public/icons/Vector.svg';

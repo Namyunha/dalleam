@@ -2,10 +2,8 @@
 import React, { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-
 import Card from '@/components/card/Card';
-
-import { Gathering } from '@/lib/definition';
+import { Gathering } from '@/types/gathering';
 import { getInstance } from '@/utils/axios';
 
 type Props = {

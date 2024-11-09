@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
-import GatheringCard from '@/app/(list)/_components/gatheringCard/GatheringCard';
+import GatheringCard from '@/app/_components/gatheringCard/GatheringCard';
 import useSavedStore from '@/stores/savedStore';
 import useUserStore from '@/stores/userStore';
 import useFilterStore from '@/stores/filterStore';
 
-export default function SavedGatheringCardList() {
+export default function SavedGatheringList() {
   const { user } = useUserStore();
   const { savedGatherings } = useSavedStore();
   const { type } = useFilterStore();

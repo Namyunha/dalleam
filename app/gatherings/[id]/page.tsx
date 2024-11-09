@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import DeadlineBadge from '@/app/(list)/_components/gatheringCard/DeadlineBadge';
+import DeadlineBadge from '@/app/_components/gatheringCard/DeadlineBadge';
 import GatheringDetailInfo from '../_components/GatheringDetailInfo';
 import ActionButtons from '../_components/ActionButtons';
 import GatheringReviewList from '../_components/GatheringReviewList';
@@ -24,6 +24,8 @@ export default function GatheringDetail({ params }: Props) {
     isFetching: gatheringDetailIsFetching,
   } = useGatheringDetailQuery(id);
 
+  console.log('gatheringDetailIsFetching = ', gatheringDetailIsFetching);
+
   const {
     status: gatheringReviewsStatus,
     data: gatheringReviewsData,
@@ -37,10 +39,6 @@ export default function GatheringDetail({ params }: Props) {
     error: gatheringParticipantsError,
     isFetching: gatheringParticipantsIsFetching,
   } = useGatheringParticipantsQuery(id);
-
-  console.log('gatheringDetailData = ', gatheringDetailData);
-  console.log('reviewData = ', gatheringReviewsData);
-  console.log('gatheringParticipantsData = ', gatheringParticipantsData);
 
   if (gatheringDetailStatus === 'error') {
     return (

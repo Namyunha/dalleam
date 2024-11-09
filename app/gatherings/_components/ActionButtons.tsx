@@ -14,7 +14,7 @@ import useUserStore from '@/stores/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/components/toast/ToastManager';
 import useFilterStore from '@/stores/filterStore';
-import { GatheringType } from '@/lib/definition';
+import { GatheringType } from '@/types/gathering';
 
 type Props = {
   isFull: boolean;

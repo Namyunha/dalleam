@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import ReviewCard from '@/components/card/ReviewCard';
 
-import { Review } from '@/lib/definition';
+import { Review } from '@/types/review';
 import { getInstance } from '@/utils/axios';
 
 type Props = {

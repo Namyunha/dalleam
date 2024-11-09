@@ -2,8 +2,8 @@ import MainTab from '@/components/tab/MainTab';
 import SubTab from '@/components/tab/SubTab';
 import Tabs from '@/components/tab/Tabs';
 import React from 'react';
-import SavedGatheringCardList from './SavedGatheringCardList';
 import Header from './Header';
+import SavedGatheringList from './SavedGatheringList';
 
 export default function SavedGatherings() {
   return (
@@ -14,7 +14,7 @@ export default function SavedGatherings() {
           <MainTab />
           <SubTab />
         </Tabs>
-        <SavedGatheringCardList />
+        <SavedGatheringList />
       </div>
     </div>
   );
