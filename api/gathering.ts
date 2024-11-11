@@ -33,6 +33,21 @@ export const postGathering = async ({ gathering }: { gathering: gatheringSchema 
   return result.data;
 };
 
+export const joinGathering = async (id: number) => {
+  const result = await fetcher.post(`gatherings/${id}/join`);
+  return result.data;
+};
+
+export const leaveGathering = async (id: number) => {
+  const result = await fetcher.delete(`gatherings/${id}/leave`);
+  return result.data;
+};
+
+export const cancelGathering = async (id: number) => {
+  const response = await fetcher.put(`gatherings/${id}/cancel`);
+  return response.data;
+};
+
 export const getGatheringParticipants = async (id: number) => {
   const result = await fetcher.get<Participant[]>(`gatherings/${id}/participants`, {
     params: { limit: 100 },

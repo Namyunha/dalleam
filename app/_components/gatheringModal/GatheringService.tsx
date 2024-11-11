@@ -5,7 +5,7 @@ import Box from '@/public/icons/box.svg';
 import CheckBox from '@/public/icons/check_box.svg';
 import clsx from 'clsx';
 import { gatherings } from '@/lib/constants';
-import { ControlProps } from '@/lib/definition';
+import { ControlProps } from '@/types/gathering';
 
 function GatheringService({ control }: ControlProps) {
   const { OFFICE_STRETCHING, MINDFULNESS, WORKATION } = gatherings;

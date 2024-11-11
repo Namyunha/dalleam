@@ -2,7 +2,7 @@ import Chip from '@/components/chip/Chip';
 import { gatheringRules, gatheringSchema } from '@/constants/formSchema';
 import { convertDate } from '@/utils/convertDate';
 import clsx from 'clsx';
-import React, { Dispatch, SetStateAction, useMemo } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 type timeSlotProps = { time: string; date: string };

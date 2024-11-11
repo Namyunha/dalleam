@@ -10,7 +10,7 @@ type Props = {
   onPageChange: Dispatch<SetStateAction<number>>;
 };
 
-const CustomPagination = ({ currentPage, totalPages, onPageChange }: Props) => {
+export default function GatheringPagination({ currentPage, totalPages, onPageChange }: Props) {
   const renderItem = ({
     ref,
     key,
@@ -92,6 +92,4 @@ const CustomPagination = ({ currentPage, totalPages, onPageChange }: Props) => {
       }}
     />
   );
-};
-
-export default CustomPagination;
+}

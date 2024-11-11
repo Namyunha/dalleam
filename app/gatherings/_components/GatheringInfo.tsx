@@ -1,25 +1,23 @@
 'use client';
 import React from 'react';
-import Saved from '@/app/_components/Saved';
-import ExpandLine from './ExpandLine';
-import Profile from '@/components/profile/Profile';
-import { formatDateTime } from '@/utils/gathering';
-import { Gathering, Participant } from '@/types/gathering';
-import CountAnimation from './Count';
-
 import VectorIcon from '/public/icons/Vector.svg';
 import CheckedIcon from '/public/icons/Checked.svg';
+import Profile from '@/components/profile/Profile';
+import Saved from '@/app/_components/Saved';
+import CountAnimation from '@/app/_components/Count';
+import ExpandLine from '@/app/_components/ExpandLine';
+import { Gathering, Participant } from '@/types/gathering';
+import { formatDateTime } from '@/utils/gathering';
 
 type Props = {
   gatheringDetails: Gathering;
   participants: Participant[];
 };
 
-export default function GatheringDetailInfo({ gatheringDetails, participants }: Props) {
+export default function GatheringInfo({ gatheringDetails, participants }: Props) {
   const sortedParticipants = participants.sort((a, b) => {
     const first = a.User.image !== null ? 1 : 0;
     const second = b.User.image != null ? 1 : 0;
-
     return second - first;
   });
 

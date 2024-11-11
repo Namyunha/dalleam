@@ -3,11 +3,11 @@ import { differenceInDays, differenceInHours } from 'date-fns';
 import Alarm from '/public/icons/gathering/alarm.svg';
 
 type Props = {
-  registrationEnd: string;
+  registrationEnd?: string;
   roundedTopRight?: boolean;
 };
 
-const DeadlineBadge = ({ registrationEnd, roundedTopRight = true }: Props) => {
+const DeadlineBadge = ({ registrationEnd = '', roundedTopRight = true }: Props) => {
   const now = new Date();
 
   const daysDiff = differenceInDays(registrationEnd, now);

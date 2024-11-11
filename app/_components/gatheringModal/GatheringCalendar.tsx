@@ -9,7 +9,7 @@ import DallaemCalendar from '@/components/DallaemCalendar';
 import { Controller } from 'react-hook-form';
 import { gatheringRules } from '@/constants/formSchema';
 import GatheringTimes from './GatheringTimes';
-import { ControlProps } from '@/lib/definition';
+import { ControlProps } from '@/types/gathering';
 
 type timeSlotProps = { time: string; date: string };
 

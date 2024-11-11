@@ -2,7 +2,7 @@ import Select from '@/components/input/Select';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { gatheringRules } from '@/constants/formSchema';
-import { ControlProps } from '@/lib/definition';
+import { ControlProps } from '@/types/gathering';
 import clsx from 'clsx';
 
 const location = ['건대입구', '을지로3가', '신림', '홍대입구'];

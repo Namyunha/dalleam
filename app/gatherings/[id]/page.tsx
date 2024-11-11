@@ -1,12 +1,13 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
+import useUserStore from '@/stores/userStore';
 import DeadlineBadge from '@/app/_components/gatheringCard/DeadlineBadge';
-import GatheringDetailInfo from '../_components/GatheringDetailInfo';
-import ActionButtons from '../_components/ActionButtons';
-import GatheringReviewList from '../_components/GatheringReviewList';
 import { useGatheringDetailQuery, useGatheringParticipantsQuery } from '@/services/gathering';
-import { useGatheringReviewsQuery } from '@/services/reviews';
+import GatheringInfo from '../_components/GatheringInfo';
+import GatheringFooter from '../_components/GatheringFooter';
+import GatheringReviewList from '../_components/GatheringReviewList';
+import GatheringButton from '../_components/GatheringButton';
 
 type Props = {
   params: {
@@ -15,68 +16,35 @@ type Props = {
 };
 
 export default function GatheringDetail({ params }: Props) {
-  const id = Number(params.id);
+  const { user } = useUserStore();
+  const gatheringId = Number(params.id);
 
-  const {
-    status: gatheringDetailStatus,
-    data: gatheringDetailData,
-    error: gatheringDetailError,
-    isFetching: gatheringDetailIsFetching,
-  } = useGatheringDetailQuery(id);
+  const { data: gatheringDetailData, isFetching: gatheringDetailIsFetching } =
+    useGatheringDetailQuery(gatheringId);
+  const { data: gatheringParticipantsData, isFetching: gatheringParticipantsIsFetching } =
+    useGatheringParticipantsQuery(gatheringId);
 
-  console.log('gatheringDetailIsFetching = ', gatheringDetailIsFetching);
-
-  const {
-    status: gatheringReviewsStatus,
-    data: gatheringReviewsData,
-    error: gatheringReviewsError,
-    isFetching: gatheringReviewsIsFetching,
-  } = useGatheringReviewsQuery(id);
-
-  const {
-    status: gatheringParticipantsStatus,
-    data: gatheringParticipantsData,
-    error: gatheringParticipantsError,
-    isFetching: gatheringParticipantsIsFetching,
-  } = useGatheringParticipantsQuery(id);
-
-  if (gatheringDetailStatus === 'error') {
-    return (
-      <div className="font-semibold text-red-500">
-        <p>{gatheringDetailError.message}</p>
-      </div>
-    );
-  }
-
-  if (gatheringReviewsStatus === 'error') {
-    return (
-      <div className="font-semibold text-red-500">
-        <p>{gatheringReviewsError.message}</p>
-      </div>
-    );
-  }
-
-  if (!gatheringParticipantsData) {
-    return (
-      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
-        참여자 목록이 존재하지 않습니다.
-      </div>
-    );
-  }
-
-  if (!gatheringDetailData) {
+  if (!gatheringDetailData || !gatheringParticipantsData) {
     return (
       <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
         모임 정보가 존재하지 않습니다.
       </div>
     );
   }
+  if (gatheringDetailIsFetching || gatheringParticipantsIsFetching) {
+    return (
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        모임 정보를 불러오는 중입니다.
+      </div>
+    );
+  }
 
-  const actionButtonProps = {
+  const buttonProps = {
+    gatheringId,
+    isJoined: gatheringParticipantsData.map(({ userId }) => userId).includes(user?.id as number),
     isFull: gatheringDetailData.capacity === gatheringDetailData.participantCount,
+    userId: user?.id as number,
     hostId: gatheringDetailData.createdBy,
-    gatheringId: id,
-    joinedGatheringIds: gatheringParticipantsData.map(({ userId }) => userId),
   };
 
   return (
@@ -94,7 +62,7 @@ export default function GatheringDetail({ params }: Props) {
               />
               <DeadlineBadge registrationEnd={gatheringDetailData.registrationEnd} />
             </div>
-            <GatheringDetailInfo
+            <GatheringInfo
               gatheringDetails={gatheringDetailData}
               participants={gatheringParticipantsData}
             />
@@ -104,19 +72,13 @@ export default function GatheringDetail({ params }: Props) {
               이용자들은 이 프로그램을 이렇게 느꼈어요!
             </p>
             {/* 리뷰 데이터가 없으면 목록을 표시하지 않음 */}
-            {gatheringReviewsData && gatheringReviewsData?.length > 0 ? (
-              <GatheringReviewList reviews={gatheringReviewsData} />
-            ) : (
-              <div className="flex items-center justify-center h-full min-h-500pxr md:min-h-696pxr">
-                <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
-                  아직 리뷰가 없어요
-                </div>
-              </div>
-            )}
+            <GatheringReviewList gatheringId={gatheringId} />
           </div>
         </div>
       </div>
-      <ActionButtons {...actionButtonProps} />
+      <GatheringFooter isHosted={gatheringDetailData.createdBy === (user?.id as number)}>
+        <GatheringButton {...buttonProps} />
+      </GatheringFooter>
     </>
   );
 }

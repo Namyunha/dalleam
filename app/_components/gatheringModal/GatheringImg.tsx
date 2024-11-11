@@ -2,7 +2,7 @@ import Button from '@/components/Button';
 import Input from '@/components/input/Input';
 import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
-import { ControlProps } from '@/lib/definition';
+import { ControlProps } from '@/types/gathering';
 
 function GatheringImg({ control }: ControlProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
