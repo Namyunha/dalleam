@@ -10,6 +10,7 @@ import { useGatheringBtn } from '@/hooks/useGatheringBtn';
 import clsx from 'clsx';
 import Modal from '@/components/Modal';
 import LoginAlert from '@/components/loginAlert/LoginAlert';
+import GatheringReviewModal from '@/components/GatheringReviewModal';
 
 type Props = {
   gatheringId: number;
@@ -23,52 +24,56 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
   const router = useRouter();
   const { modalRef, handleOpenModal, handleCloseModal } = useModal();
   const { gatheringQueryKeys } = useParams({ isGathering: true });
+
   const {
     activateGathering: { joinMutate, leaveMutate, cancelMutate, handleShare },
     pendingGathering: { isJoining, isLeaving, isCanceling },
   } = useGatheringBtn({ gatheringId, back: router.back, gatheringQueryKeys });
 
-  let content = '참여하기';
+  let content = isJoining ? '모임 참여중..' : '모임 참여하기';
+  let subContent = '공유하기';
   let buttonState: 'full' | 'empty' = 'full';
-  let clickEvent = () => (!userId ? handleOpenModal() : joinMutate());
+  let clickEvent = !userId ? handleOpenModal : joinMutate;
+  let subClickEvent = handleShare;
 
-  if (userId && hostId === userId) {
-    clickEvent = () => cancelMutate();
+  if (hostId === userId) {
+    clickEvent = cancelMutate;
     content = isCanceling ? '모임 취소중..' : '모임 취소하기';
   }
-  if (!isJoined && !isFull) {
-    clickEvent();
-    content = isJoining ? '참여 요청중..' : '참여하기';
-  }
-  if (userId && isJoined) {
-    clickEvent = () => leaveMutate();
+  if (hostId !== userId && isJoined) {
+    clickEvent = leaveMutate;
+    subClickEvent = handleOpenModal;
     content = isLeaving ? '참여 취소중..' : '참여 취소하기';
+    subContent = '리뷰 쓰기';
   }
-
   return (
     <>
       <div className="space-x-2 flex">
         <Button
-          onClick={clickEvent}
+          className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
           fillState={buttonState}
+          onClick={() => clickEvent()}
           disabled={isFull ? true : false}
           variant={isFull ? 'gray' : undefined}
-          className={clsx('text-sm  sm:w-1/2 md:w-[110px] h-[44px]')}
         >
           {content}
         </Button>
-        {userId && hostId === userId && (
-          <Button
-            className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
-            fillState="empty"
-            onClick={handleShare}
-          >
-            공유하기
-          </Button>
-        )}
+        <Button
+          className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
+          fillState="empty"
+          onClick={() => subClickEvent()}
+          disabled={isFull ? true : false}
+          variant={isFull ? 'gray' : undefined}
+        >
+          {subContent}
+        </Button>
       </div>
       <Modal ref={modalRef}>
-        <LoginAlert onClose={handleCloseModal} gatheringId={gatheringId} />
+        {hostId !== userId && isJoined ? (
+          <GatheringReviewModal gatheringId={gatheringId} closeModal={handleCloseModal} />
+        ) : (
+          <LoginAlert onClose={handleCloseModal} gatheringId={gatheringId} />
+        )}
       </Modal>
     </>
   );

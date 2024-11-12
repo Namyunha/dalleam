@@ -1,18 +1,17 @@
 'use client';
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
 import { toast } from '@/components/toast/ToastManager';
 import Button from '@/components/Button';
 import useGatheringId from '@/stores/useGatheringId';
 import { getInstance } from '@/utils/axios';
-import { JoinedGathering, Review } from '@/lib/definition';
-
+import { JoinedGathering } from '@/types/gathering';
 import Delete from '/public/icons/delete.svg';
 import EmptyHeart from '/public/icons/reviewEmptyHeart.svg';
 import FillHeart from '/public/icons/reviewFillHeart.svg';
 
 type Props = {
+  gatheringId?: number;
   closeModal: () => void;
 };
 
@@ -21,15 +20,10 @@ type queryGatheringJoined = {
   pages: JoinedGathering[];
 };
 
-type queryWrittenReviews = {
-  pageParams: number[];
-  pages: Review[];
-};
-
-export default function ReviewModal({ closeModal }: Props) {
+export default function GatheringReviewModal({ closeModal, gatheringId }: Props) {
   const queryClient = useQueryClient();
   const { id, clearId } = useGatheringId();
-
+  console.log('gathering Id = ', gatheringId);
   const [score, setScore] = useState<{ [key: number]: boolean }>({
     0: false,
     1: false,
@@ -53,7 +47,7 @@ export default function ReviewModal({ closeModal }: Props) {
     const instance = getInstance();
 
     const res = await instance.post('/reviews', {
-      gatheringId: id,
+      gatheringId: gatheringId ?? id,
       score: scores,
       comment: review,
     });
@@ -99,7 +93,6 @@ export default function ReviewModal({ closeModal }: Props) {
     queryClient.setQueryData(['newReviews'], (oldData: queryGatheringJoined) => {
       if (oldData) {
         const updateData = oldData.pages.flat().filter((data: JoinedGathering) => data.id !== id);
-
         const pages = updateData.reduce((acc: JoinedGathering[][], _, i: number) => {
           if (i % 10 === 0) {
             acc.push(updateData.slice(i, i + 10));
@@ -183,7 +176,7 @@ export default function ReviewModal({ closeModal }: Props) {
           className="w-full h-120pxr px-2.5 py-4 bg-gray-50 rounded-xl placeholder-gray-400 outline-none"
           value={review}
           onChange={(e) => {
-            setReview((prev) => e.target.value);
+            setReview(e.target.value);
           }}
         />
       </div>

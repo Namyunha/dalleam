@@ -10,7 +10,7 @@ import Stroke from '/public/icons/gathering/line.svg';
 import Button from '../Button';
 import ChipState from '../chip/ChipState';
 
-import { Gathering } from '@/lib/definition';
+import { Gathering } from '@/types/gathering';
 import { formatDateTime, isDeadlinePassed } from '@/utils/gathering';
 import useGatheringId from '@/stores/useGatheringId';
 import useModalType from '@/stores/useModalType';
@@ -97,38 +97,20 @@ const Card = ({ normal, gathering, openModal, isReviewed }: Props) => {
             </div>
           </div>
           {/* 버튼 컴포넌트 */}
-          <>
-            {!normal && !isFinishedRegisterEnd && (
-              <Button
-                size="sm"
-                fillState="empty"
-                variant="orange"
-                onClick={() => {
-                  setType('cancel');
-                  openModal && openModal();
-                  setId(gathering.id);
-                }}
-              >
-                예약 취소하기
-              </Button>
-            )}
-            {!normal && isFinishedRegisterEnd && (
-              <Button
-                size="sm"
-                fillState="full"
-                variant={`${isReviewed ? 'gray' : 'orange'}`}
-                onClick={() => {
-                  if (!isReviewed) {
-                    setType('review');
-                    openModal && openModal();
-                    setId(gathering.id);
-                  }
-                }}
-              >
-                리뷰 작성하기
-              </Button>
-            )}
-          </>
+          <Button
+            size="sm"
+            fillState="full"
+            variant={`${isReviewed ? 'gray' : 'orange'}`}
+            onClick={() => {
+              if (!isReviewed) {
+                setType('review');
+                openModal && openModal();
+                setId(gathering.id);
+              }
+            }}
+          >
+            리뷰 작성하기
+          </Button>
         </div>
       </div>
       <Stroke className="w-full" />

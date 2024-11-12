@@ -6,11 +6,9 @@ import { useInView } from 'react-intersection-observer';
 import useModal from '@/hooks/useModal';
 import { getInstance } from '@/utils/axios';
 import { JoinedGathering } from '@/types/gathering';
-import useModalType from '@/stores/useModalType';
 
 import Modal from '@/components/Modal';
-import Review from '@/components/modal/review/Review';
-import CheckCancel from '@/components/modal/checkCancel/CheckCancel';
+import GatheringReviewModal from '@/components/GatheringReviewModal';
 import Card from '@/components/card/Card';
 
 type Props = {
@@ -20,8 +18,6 @@ type Props = {
 export default function MyGatherings({ initialMyGatherings }: Props) {
   const { ref, inView } = useInView();
   const { modalRef, handleCloseModal, handleOpenModal } = useModal();
-  const { type } = useModalType();
-  const client = useQueryClient();
 
   const getMyGatheringData = async (offset: number) => {
     const instance = getInstance();
@@ -86,8 +82,7 @@ export default function MyGatherings({ initialMyGatherings }: Props) {
       {!isFetching && hasNextPage && <div ref={ref}></div>}
 
       <Modal ref={modalRef}>
-        {type === 'cancel' && <CheckCancel closeModal={handleCloseModal} />}
-        {type === 'review' && <Review closeModal={handleCloseModal} />}
+        <GatheringReviewModal closeModal={handleCloseModal} />
       </Modal>
     </>
   );
