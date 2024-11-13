@@ -1,5 +1,5 @@
-import { Gathering } from './definition';
-import { Review } from './definition';
+import { Gathering } from '@/types/gathering';
+import { Review } from '@/types/review';
 
 const mockGathering: Gathering = {
   teamId: 'FESI3-3',

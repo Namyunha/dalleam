@@ -18,6 +18,12 @@ export type Review = {
   };
 };
 
+export type GatheringReview = {
+  gatheringId: number;
+  score: number;
+  comment: string;
+};
+
 export type Points = {
   teamId: string;
   type: GatheringType;

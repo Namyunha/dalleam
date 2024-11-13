@@ -1,5 +1,5 @@
 import { GatheringType } from '@/types/gathering';
-import { paramsType, Points, Review } from '@/types/review';
+import { paramsType, Points, Review, GatheringReview } from '@/types/review';
 import { getInstance } from '@/utils/axios';
 
 const fetcher = getInstance();
@@ -23,5 +23,17 @@ export const getReviews = async ({
 
 export const getScores = async (typeTab: GatheringType = 'DALLAEMFIT'): Promise<Points[]> => {
   const result = await fetcher.get(`reviews/scores?type=${typeTab}`);
-  return result.data; //
+  return result.data;
+};
+
+export const getGatheringReviews = async (id: number) => {
+  const result = await fetcher.get<Review[]>('reviews', {
+    params: { gatheringId: id },
+  });
+  return result.data;
+};
+
+export const postReviews = async (review: GatheringReview) => {
+  const result = await fetcher.post('/reviews', review);
+  return result.data;
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MyGatherings from '@/components/myPage/myGatherings/MyGatherings';
+import MyGatherings from './_components/MyGatherings';
 import { getInstance } from '@/utils/axios';
 
 export default async function MyGatheringPage() {

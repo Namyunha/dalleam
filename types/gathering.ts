@@ -1,4 +1,6 @@
+import { gatheringSchema } from '@/constants/formSchema';
 import { gatherings, locations, sorts } from '@/constants/gathering';
+import { Control } from 'react-hook-form';
 
 export type GatheringType = keyof typeof gatherings;
 export type LocationType = keyof typeof locations;
@@ -68,4 +70,8 @@ export type Participant = {
     companyName: string;
     image?: string;
   };
+};
+
+export type ControlProps = {
+  control: Control<gatheringSchema>;
 };

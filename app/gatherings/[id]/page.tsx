@@ -1,15 +1,13 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
-import { Metadata } from 'next';
-
-import Container from '@/components/container/Container';
-import DeadlineBadge from '@/app/(list)/_components/gatheringCard/DeadlineBadge';
-import ActionButtons from '../_components/ActionButtons';
-import ReviewDetailCardList from '../_components/review/ReviewDetailCardList';
-
-import { fetchDetailGathering, fetchDetailReviews, fetchJoinedGatheringIds } from '@/lib/data';
-import { getMetadata } from '@/constants/metadata';
-import { mockGatheringReviews } from '@/lib/placeholder-data';
+import useUserStore from '@/stores/userStore';
+import DeadlineBadge from '@/app/_components/gatheringCard/DeadlineBadge';
+import { useGatheringDetailQuery, useGatheringParticipantsQuery } from '@/services/gathering';
+import GatheringInfo from '../_components/GatheringInfo';
+import GatheringFooter from '../_components/GatheringFooter';
+import GatheringReviewList from '../_components/GatheringReviewList';
+import GatheringButton from '../_components/GatheringButton';
 
 type Props = {
   params: {
@@ -17,62 +15,36 @@ type Props = {
   };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id;
+export default function GatheringDetail({ params }: Props) {
+  const { user } = useUserStore();
+  const gatheringId = Number(params.id);
 
-  const { data: gatheringData, errorMessage: gatheringErrorMessage } =
-    await fetchDetailGathering(id);
+  const { data: gatheringDetailData, isFetching: gatheringDetailIsFetching } =
+    useGatheringDetailQuery(gatheringId);
+  const { data: gatheringParticipantsData, isFetching: gatheringParticipantsIsFetching } =
+    useGatheringParticipantsQuery(gatheringId);
 
-  return getMetadata({
-    title: `${gatheringData?.location} ${gatheringData?.type} 모집`,
-    description: `오는 ${gatheringData?.dateTime.split('T')[0]}에 ${gatheringData?.location}에서 열리는 모임에 참여하세요. 현재 ${gatheringData?.capacity}명 중 ${gatheringData?.participantCount}명이 참여 중입니다.`,
-    asPath: `/gatherings/${id}`,
-    ogImage: gatheringData?.image,
-  });
-}
-
-const GatheringDetail = async ({ params }: Props) => {
-  const id = Number(params.id);
-
-  const { data: gatheringData, errorMessage: gatheringErrorMessage } =
-    await fetchDetailGathering(id);
-
-  const { data: reviewData, errorMessage: reviewErrorMessage } = await fetchDetailReviews(id);
-
-  const { data: joinedGathering, errorMessage } = await fetchJoinedGatheringIds(id);
-
-  if (gatheringErrorMessage) {
+  if (!gatheringDetailData || !gatheringParticipantsData) {
     return (
-      <div className="font-semibold text-red-500">
-        <p>{gatheringErrorMessage}</p>
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        모임 정보가 존재하지 않습니다.
+      </div>
+    );
+  }
+  if (gatheringDetailIsFetching || gatheringParticipantsIsFetching) {
+    return (
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        모임 정보를 불러오는 중입니다.
       </div>
     );
   }
 
-  if (reviewErrorMessage) {
-    return (
-      <div className="font-semibold text-red-500">
-        <p>{reviewErrorMessage}</p>
-      </div>
-    );
-  }
-
-  if (!joinedGathering) {
-    return <p>참여자 목록이 존재하지 않습니다.</p>;
-  }
-
-  if (!gatheringData) {
-    return <p>모임 정보가 존재하지 않습니다.</p>;
-  }
-
-  const gatheringHost = gatheringData.createdBy;
-  const isFull = gatheringData.capacity === gatheringData.participantCount;
-
-  const actionButtonProps = {
-    isFull,
-    hostId: gatheringHost,
-    gatheringId: id,
-    joinedGatheringIds: joinedGathering.map(({ userId }) => userId),
+  const buttonProps = {
+    gatheringId,
+    isJoined: gatheringParticipantsData.map(({ userId }) => userId).includes(user?.id as number),
+    isFull: gatheringDetailData.capacity === gatheringDetailData.participantCount,
+    userId: user?.id as number,
+    hostId: gatheringDetailData.createdBy,
   };
 
   return (
@@ -82,36 +54,31 @@ const GatheringDetail = async ({ params }: Props) => {
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="relative w-343pxr h-180pxr md:w-340pxr md:h-240pxr lg:w-486pxr lg:h-270pxr">
               <Image
-                src={gatheringData.image || '/card-image2.png'}
-                alt={`참여할 수 있는 ${gatheringData.type} 모임`}
+                src={gatheringDetailData.image || '/card-image2.png'}
+                alt={`참여할 수 있는 ${gatheringDetailData.type} 모임`}
                 fill
                 className="object-cover rounded-3xl"
                 priority
               />
-              <DeadlineBadge registrationEnd={gatheringData.registrationEnd} />
+              <DeadlineBadge registrationEnd={gatheringDetailData.registrationEnd} />
             </div>
-            <Container gatheringDetails={gatheringData} participants={joinedGathering} />
+            <GatheringInfo
+              gatheringDetails={gatheringDetailData}
+              participants={gatheringParticipantsData}
+            />
           </div>
           <div className="p-6 bg-white border-t-2 border-gray-200 border-solid space-y-10pxr lg:space-y-4 w-343pxr md:w-696pxr md:h-820pxr lg:w-996pxr lg:h-687pxr">
             <p className="text-base font-semibold text-left text-gray-900 md:text-lg ">
               이용자들은 이 프로그램을 이렇게 느꼈어요!
             </p>
             {/* 리뷰 데이터가 없으면 목록을 표시하지 않음 */}
-            {reviewData ? (
-              <ReviewDetailCardList reviews={mockGatheringReviews} />
-            ) : (
-              <div className="flex items-center justify-center h-full min-h-500pxr md:min-h-696pxr">
-                <p className="h-10 text-sm font-medium text-center text-gray-500">
-                  아직 리뷰가 없어요
-                </p>
-              </div>
-            )}
+            <GatheringReviewList gatheringId={gatheringId} />
           </div>
         </div>
       </div>
-      <ActionButtons {...actionButtonProps} />
+      <GatheringFooter isHosted={gatheringDetailData.createdBy === (user?.id as number)}>
+        <GatheringButton {...buttonProps} />
+      </GatheringFooter>
     </>
   );
-};
-
-export default GatheringDetail;
+}

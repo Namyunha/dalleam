@@ -5,10 +5,10 @@ import Head from '/public/icons/gathering/switch.svg';
 import Dropdown from '../Dropdown';
 import useDropdown from '@/hooks/useDropDown';
 import useFilterStore from '@/stores/filterStore';
-import { sortType } from '@/lib/definition';
+import { SortType } from '@/types/gathering';
 
 const SortByFilter = ({ isReviewPage }: { isReviewPage?: boolean }) => {
-  const filters: sortType[] = isReviewPage
+  const filters: SortType[] = isReviewPage
     ? ['최신 순', '리뷰 높은 순', '참여 인원 순']
     : ['마감 임박', '참여 인원 순'];
   const { dropdownRef, handleToggleDropdown } = useDropdown();

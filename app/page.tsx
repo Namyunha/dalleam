@@ -1,6 +1,6 @@
 import { gatheringPrefetchQuery } from '@/api/prefetch';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import Gathering from './(list)/_components/Gathering';
+import Gathering from './_components/Gathering';
 
 const HomePage = async () => {
   const queryClient = await gatheringPrefetchQuery();

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { getMetadata } from '@/constants/metadata';
 import Menu from './_components/menu';
-import MyProfile from '@/components/myProfile/Myprofile';
+import MyProfile from './_components/Myprofile';
 
 const myPageMetaData = {
   title: '같이달램: 마이페이지',

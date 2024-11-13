@@ -1,6 +1,6 @@
 import { getInstance } from '@/utils/axios';
 
-import WrittenReviews from '@/components/myPage/writtenReviews/WrittenReviews';
+import WrittenReviews from '../../_components/WrittenReviews';
 
 export default async function Written() {
   const instance = getInstance();

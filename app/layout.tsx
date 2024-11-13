@@ -30,7 +30,6 @@ export default function RootLayout({
           <QueryProvider>
             <div className="bg-gray-100 flex items-center flex-col">{children}</div>
             <SpeedInsights />
-            {/* <ReactQueryDevtools initialIsOpen={true} /> */}
           </QueryProvider>
         </div>
         <div id="global-modal"></div>
