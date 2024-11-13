@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import Card from '@/components/card/Card';
 import Modal from '@/components/Modal';
-import Review from '@/components/modal/review/Review';
+import GatheringReviewModal from '@/app/_components/gatheringReviewModal/GatheringReviewModal';
 
 import { JoinedGathering } from '@/types/gathering';
 import { getInstance } from '@/utils/axios';
@@ -90,7 +90,7 @@ export default function NewReview({ initialReviews }: Props) {
       </div>
       {!isFetching && hasNextPage && <div ref={ref}></div>}
       <Modal ref={modalRef}>
-        <Review closeModal={handleCloseModal} />
+        <GatheringReviewModal closeModal={handleCloseModal} />
       </Modal>
     </>
   );
