@@ -10,7 +10,7 @@ import { useGatheringBtn } from '@/hooks/useGatheringBtn';
 import clsx from 'clsx';
 import Modal from '@/components/Modal';
 import LoginAlert from '@/components/loginAlert/LoginAlert';
-import GatheringReviewModal from '@/components/GatheringReviewModal';
+import GatheringReviewModal from '@/app/_components/gatheringReviewModal/GatheringReviewModal';
 
 type Props = {
   gatheringId: number;

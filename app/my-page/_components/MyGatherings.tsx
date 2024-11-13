@@ -8,7 +8,7 @@ import { getInstance } from '@/utils/axios';
 import { JoinedGathering } from '@/types/gathering';
 
 import Modal from '@/components/Modal';
-import GatheringReviewModal from '@/components/GatheringReviewModal';
+import GatheringReviewModal from '@/app/_components/gatheringReviewModal/GatheringReviewModal';
 import Card from '@/components/card/Card';
 
 type Props = {
