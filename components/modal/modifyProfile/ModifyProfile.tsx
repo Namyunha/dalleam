@@ -9,7 +9,7 @@ import { toast } from '@/components/toast/ToastManager';
 import Input from '../../input/Input';
 import Button from '../../Button';
 import { getInstance } from '@/utils/axios';
-import { User } from '@/lib/definition';
+import { User } from '@/types/user';
 import useUserStore from '@/stores/userStore';
 
 import Modify from '/public/icons/profileBg/modifyProfile.svg';

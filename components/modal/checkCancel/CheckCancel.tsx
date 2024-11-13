@@ -6,7 +6,7 @@ import { toast } from '@/components/toast/ToastManager';
 import Button from '@/components/Button';
 import { getInstance } from '@/utils/axios';
 import useGatheringId from '@/stores/useGatheringId';
-import { JoinedGathering } from '@/lib/definition';
+import { JoinedGathering } from '@/types/gathering';
 
 import Delete from '/public/icons/delete.svg';
 

@@ -3,8 +3,8 @@ import FillHeart from '/public/icons/gathering/fill_heart.svg';
 import DefaultProfile from '/public/icons/DefaultProfile.svg';
 import Vector from '/public/icons/Vector.svg';
 import Image from 'next/image';
-import { Review } from '@/lib/definition';
-import { GatheringType } from '@/lib/definition';
+import { Review } from '@/types/review';
+import { GatheringType } from '@/types/gathering';
 
 type props = Review & { isMyPage: boolean };
 

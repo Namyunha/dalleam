@@ -1,7 +1,7 @@
 'use client';
 
 import Arrow from '/public/icons/gathering/arrow_down.svg';
-import { LocationType } from '@/lib/definition';
+import { LocationType } from '@/types/gathering';
 import useDropdown from '@/hooks/useDropDown';
 import Dropdown from '../Dropdown';
 import useFilterStore from '@/stores/filterStore';
