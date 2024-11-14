@@ -6,9 +6,15 @@ import {
   joinGathering,
   leaveGathering,
   cancelGathering,
+  getJoinedGatherings,
 } from '@/api/gathering';
 import { toast } from '@/components/toast/ToastManager';
-import { Gathering, gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
+import {
+  Gathering,
+  gatheringQueryKeys,
+  savedGatheringQueryKeys,
+  myGatheringQueryKeys,
+} from '@/types/gathering';
 import { paramsType } from '@/types/review';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -19,6 +25,18 @@ export const useGatheringInfiniteQuery = (
   return useInfiniteQuery({
     queryKey,
     queryFn: ({ pageParam = 0 }) => getGatherings({ pageParam, params }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length === 10 ? allPages.length : undefined;
+    },
+    initialPageParam: 0,
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useJoinedGatheringInfiniteQuery = (params = { completed: false, reviewed: false }) => {
+  return useInfiniteQuery({
+    queryKey: [['gathering', 'joined']],
+    queryFn: ({ pageParam = 0 }) => getJoinedGatherings({ pageParam, params }),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length === 10 ? allPages.length : undefined;
     },

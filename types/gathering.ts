@@ -21,6 +21,8 @@ export type Gathering = {
   canceledAt: string | null;
 };
 
+export type myGatheringQueryKeys = [['gathering', 'joined']];
+
 export type gatheringQueryKeys = [
   ['gathering'],
   {

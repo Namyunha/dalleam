@@ -26,7 +26,6 @@ export default function WrittenReviews({ initialWrittenReviews, userId }: Props)
         offset: offset,
       },
     });
-
     return res.data;
   };
 

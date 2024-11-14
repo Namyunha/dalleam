@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { GatheringType, LocationType, SortType } from '@/types/gathering';
 import { reviewQueryKeys, reviewScoresQueryKeys } from '@/types/review';
 import { gatheringQueryKeys } from '@/types/gathering';
-import { getGatherings } from './gathering';
+import { getJoinedGatherings, getGatherings } from './gathering';
 
 const queryClient = new QueryClient();
 
@@ -41,6 +41,15 @@ export const gatheringPrefetchQuery = async () => {
   await queryClient.prefetchInfiniteQuery({
     queryKey: gatheringQueryKeys,
     queryFn: ({ pageParam }) => getGatherings({ pageParam }),
+    initialPageParam: 0,
+  });
+  return queryClient;
+};
+
+export const getJoinedGatheringPrefetchQuery = async () => {
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [['gathering', 'joined']],
+    queryFn: ({ pageParam }) => getJoinedGatherings({ pageParam }),
     initialPageParam: 0,
   });
   return queryClient;
