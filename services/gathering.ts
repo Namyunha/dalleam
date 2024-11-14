@@ -12,12 +12,6 @@ import { Gathering, gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/
 import { paramsType } from '@/types/review';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-const gatGatheringDetailKeys = (id: number) => {
-  const queryClient = useQueryClient();
-  queryClient.invalidateQueries({ queryKey: [['gathering'], { id }] });
-  queryClient.invalidateQueries({ queryKey: [['gathering', 'participants'], { id }] });
-};
-
 export const useGatheringInfiniteQuery = (
   queryKey: gatheringQueryKeys | savedGatheringQueryKeys,
   params: paramsType,
@@ -51,21 +45,29 @@ export const useGatheringMutate = (
 };
 
 export const useGatheringJoinMutation = (id: number) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => joinGathering(id),
-    onSuccess: () => {
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: [['gathering'], { id }] }),
+        queryClient.invalidateQueries({ queryKey: [['gathering', 'participants'], { id }] }),
+      ]);
       toast('모임 참여 완료');
-      gatGatheringDetailKeys(id);
     },
   });
 };
 
 export const useGatheringLeavingMutation = (id: number) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => leaveGathering(id),
-    onSuccess: () => {
-      toast('참여 취소 완료');
-      gatGatheringDetailKeys(id);
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: [['gathering'], { id }] }),
+        queryClient.invalidateQueries({ queryKey: [['gathering', 'participants'], { id }] }),
+      ]);
+      toast('모임 취소 완료');
     },
   });
 };
