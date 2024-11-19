@@ -1,10 +1,14 @@
 import { gatheringSchema } from '@/constants/formSchema';
 import { gatherings, locations, sorts } from '@/constants/gathering';
 import { Control } from 'react-hook-form';
-
+import { myPageFilter, myPageSubTab } from '@/constants/gathering';
 export type GatheringType = keyof typeof gatherings;
 export type LocationType = keyof typeof locations;
 export type SortType = keyof typeof sorts;
+export type myPageFilterType = keyof typeof myPageFilter;
+export type myPageSubType = keyof typeof myPageSubTab;
+export type myPageFilterNameType = '나의 모임' | '나의 리뷰' | '내가 만든 모임';
+export type myPageSubTabType = '작성 가능한 리뷰' | '작성한 리뷰';
 
 export type Gathering = {
   teamId: string;
@@ -30,8 +34,10 @@ export type gatheringQueryKeys = [
     location?: LocationType;
     sortBy?: SortType;
     date?: string;
+    createdBy?: number;
   },
 ];
+
 export type savedGatheringQueryKeys = [
   ['gathering', 'saved'],
   {
@@ -46,7 +52,7 @@ export type JoinedGathering = {
   teamId: string;
   id: number;
   type: GatheringType;
-  name: null;
+  name: string;
   dateTime: string;
   registrationEnd: string;
   location: LocationType;

@@ -27,3 +27,14 @@ export const sorts = {
   '리뷰 높은 순': '리뷰 높은 순',
   '마감 임박': '마감 임박',
 };
+
+export const myPageFilter = {
+  joined: 'joined',
+  review: 'review',
+  createdBy: 'createdBy',
+};
+
+export const myPageSubTab = {
+  available: 'available',
+  written: 'written',
+};

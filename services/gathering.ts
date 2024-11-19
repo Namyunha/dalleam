@@ -9,12 +9,7 @@ import {
   getJoinedGatherings,
 } from '@/api/gathering';
 import { toast } from '@/components/toast/ToastManager';
-import {
-  Gathering,
-  gatheringQueryKeys,
-  savedGatheringQueryKeys,
-  myGatheringQueryKeys,
-} from '@/types/gathering';
+import { Gathering, gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
 import { paramsType } from '@/types/review';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -33,10 +28,31 @@ export const useGatheringInfiniteQuery = (
   });
 };
 
-export const useJoinedGatheringInfiniteQuery = (params = { completed: false, reviewed: false }) => {
+export const useJoinedGatheringInfiniteQuery = ({
+  completed,
+  reviewed,
+  userId,
+}: {
+  completed?: boolean;
+  reviewed?: boolean;
+  userId?: number;
+}) => {
   return useInfiniteQuery({
-    queryKey: [['gathering', 'joined']],
-    queryFn: ({ pageParam = 0 }) => getJoinedGatherings({ pageParam, params }),
+    queryKey: [['gathering'], { joined: userId }],
+    queryFn: ({ pageParam = 0 }) => getJoinedGatherings({ pageParam, completed, reviewed }),
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length === 10 ? allPages.length : undefined;
+    },
+    initialPageParam: 0,
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useMyGatheringInfiniteQuery = ({ userId }: { userId?: number }) => {
+  return useInfiniteQuery({
+    queryKey: [['gathering'], { createdBy: userId }],
+    queryFn: ({ pageParam = 0 }) =>
+      getGatherings({ pageParam, params: { limit: 10, createdBy: userId } }),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length === 10 ? allPages.length : undefined;
     },
@@ -112,6 +128,7 @@ export const useGatheringDetailQuery = (id: number) => {
   return useQuery({
     queryKey: [['gathering'], { id }],
     queryFn: async (): Promise<Gathering> => await getGatheringDetail(id),
+    staleTime: 5 * 60 * 1000,
   });
 };
 
@@ -119,5 +136,6 @@ export const useGatheringParticipantsQuery = (id: number) => {
   return useQuery({
     queryKey: [['gathering', 'participants'], { id }],
     queryFn: async () => getGatheringParticipants(id),
+    staleTime: 5 * 60 * 1000,
   });
 };

@@ -46,11 +46,28 @@ export const gatheringPrefetchQuery = async () => {
   return queryClient;
 };
 
-export const getJoinedGatheringPrefetchQuery = async () => {
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: [['gathering', 'joined']],
-    queryFn: ({ pageParam }) => getJoinedGatherings({ pageParam }),
-    initialPageParam: 0,
-  });
+export const getJoinedGatheringPrefetchQuery = async (userId: number) => {
+  await Promise.all([
+    queryClient.prefetchInfiniteQuery({
+      queryKey: [['gathering'], { joined: userId }],
+      queryFn: ({ pageParam }) => getJoinedGatherings({ pageParam }),
+      initialPageParam: 0,
+      staleTime: 1000 * 60 * 10, // 5분 동안 데이터 신선
+    }),
+    queryClient.prefetchInfiniteQuery({
+      queryKey: [['gathering'], { createdBy: userId }],
+      queryFn: ({ pageParam }) =>
+        getGatherings({ pageParam, params: { limit: 10, createdBy: userId } }),
+      initialPageParam: 0,
+      staleTime: 1000 * 60 * 10, // 5분 동안 데이터 신선
+    }),
+    queryClient.prefetchInfiniteQuery({
+      queryKey: [['reviews'], { userId }],
+      queryFn: ({ pageParam }) => getReviews({ pageParam, params: { limit: 10, userId } }),
+      initialPageParam: 0,
+      staleTime: 1000 * 60 * 10, // 5분 동안 데이터 신선
+    }),
+  ]);
+
   return queryClient;
 };

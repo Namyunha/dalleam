@@ -1,14 +1,6 @@
 // fetcher 함수 작성 파일
 import { getInstance } from '@/utils/axios';
 import { User } from '@/types/user';
-import { gatheringSchema } from '@/constants/formSchema';
-
-export const postGathering = async ({ gathering }: { gathering: gatheringSchema }) => {
-  const response = await getInstance().post('/gatherings', gathering, {
-    headers: { 'Content-Type': 'multipart/form-data', charset: 'utf-8' },
-  });
-  return response.data;
-};
 
 export const login = async (body: { email: string; password: string }) => {
   const instance = getInstance();

@@ -1,27 +1,18 @@
 import { create } from 'zustand';
-import { GatheringType, LocationType, SortType } from '@/types/gathering';
+import { myPageFilterType } from '@/types/gathering';
+
+type myPageSubTabType = 'available' | 'written';
 
 type FilterState = {
-  location: LocationType;
-  date: string;
-  type: GatheringType;
-  setType: (type: GatheringType) => void;
-  setLocation: (location: LocationType) => void;
-  setDate: (date: string) => void;
-  resetFilters: () => void; // 리셋 함수 추가
+  type: myPageFilterType;
+  subTab: myPageSubTabType;
+  setType: (type: myPageFilterType) => void;
+  setSubTab: (tab: myPageSubTabType) => void;
 };
 
 export const useMyPageFilterStore = create<FilterState>((set) => ({
-  location: '지역 선택',
-  date: '날짜 선택',
-  type: 'DALLAEMFIT',
-  setType: (type: GatheringType) => set({ type }),
-  setLocation: (location: LocationType) => set({ location }),
-  setDate: (date: string) => set({ date }),
-  resetFilters: () =>
-    set({
-      location: '지역 선택',
-      date: '날짜 선택',
-      type: 'DALLAEMFIT',
-    }),
+  type: 'joined',
+  subTab: 'available',
+  setType: (type: myPageFilterType) => set({ type }),
+  setSubTab: (subTab: myPageSubTabType) => set({ subTab }),
 }));

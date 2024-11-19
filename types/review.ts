@@ -38,10 +38,11 @@ export type Points = {
 export type reviewQueryKeys = [
   ['reviews'],
   {
-    type: GatheringType;
+    type?: GatheringType;
     location?: LocationType;
     sortBy?: SortType;
     date?: string;
+    userId?: number;
   },
 ];
 
@@ -59,10 +60,11 @@ export type sortBy = 'createdAt' | 'score' | 'participantCount' | 'dateTime' | '
 
 export type paramsType = {
   id?: string;
-  type: GatheringType;
-  sortOrder: 'desc' | 'asc';
+  type?: GatheringType;
+  sortOrder?: 'desc' | 'asc';
   location?: LocationType;
   date?: string;
+  userId?: number;
   createdBy?: number;
   sortBy?: sortBy;
   limit?: 10;

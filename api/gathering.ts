@@ -23,14 +23,17 @@ export const getGatherings = async ({
 
 export const getJoinedGatherings = async ({
   pageParam,
-  params = { completed: false, reviewed: false },
+  completed,
+  reviewed,
 }: {
   pageParam: number;
-  params?: { completed: boolean; reviewed: boolean };
+  completed?: boolean;
+  reviewed?: boolean;
 }) => {
   const result = await fetcher.get('/gatherings/joined', {
     params: {
-      ...params,
+      completed,
+      reviewed,
       limit: 10,
       sortOrder: 'desc',
       offset: pageParam * 10,
