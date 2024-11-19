@@ -2,7 +2,6 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import Card from '@/components/card/Card';
 import Modal from '@/components/Modal';
 import GatheringReviewModal from '@/app/_components/gatheringReviewModal/GatheringReviewModal';
 import { useInView } from 'react-intersection-observer';
@@ -31,6 +30,7 @@ export default function MyGatheringList() {
   } = useMyPageParams({ userId });
 
   const { ref, inView } = useInView();
+  console.log('data = ', data);
 
   useEffect(() => {
     if (inView) {
