@@ -30,6 +30,9 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
     pendingGathering: { isJoining, isLeaving, isCanceling },
   } = useGatheringBtn({ gatheringId, back: router.back, gatheringQueryKeys });
 
+  console.log('isJoining = ', isJoined);
+  console.log('isFull = ', isFull);
+
   let content = isJoining ? '모임 참여중..' : '모임 참여하기';
   let subContent = '공유하기';
   let buttonState: 'full' | 'empty' = 'full';
@@ -53,8 +56,8 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
           className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
           fillState={buttonState}
           onClick={() => clickEvent()}
-          disabled={isFull ? true : false}
-          variant={isFull ? 'gray' : undefined}
+          disabled={isFull && !isJoined && hostId !== userId ? true : false}
+          variant={isFull && !isJoined && hostId !== userId ? 'gray' : undefined}
         >
           {content}
         </Button>
@@ -62,8 +65,6 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
           className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
           fillState="empty"
           onClick={() => subClickEvent()}
-          disabled={isFull ? true : false}
-          variant={isFull ? 'gray' : undefined}
         >
           {subContent}
         </Button>

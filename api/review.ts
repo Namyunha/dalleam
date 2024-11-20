@@ -16,8 +16,31 @@ export const getReviews = async ({
     location: params.location ? encodeURIComponent(params.location) : undefined,
     offset: pageParam * 10,
   };
-
   const result = await fetcher.get('reviews', { params: encodedParams });
+  return result.data;
+};
+
+export const getWrittenReviews = async (userId: number, pageParam: number) => {
+  const result = await fetcher.get('/reviews', {
+    params: {
+      userId: userId,
+      limit: 10,
+      offset: pageParam * 10,
+    },
+  });
+  return result.data;
+};
+
+export const getAvailableReviews = async (pageParam: number) => {
+  const result = await fetcher.get('/gatherings/joined', {
+    params: {
+      limit: 10,
+      offset: pageParam * 10,
+      reviewed: false,
+      completed: true,
+      sortOrder: 'desc',
+    },
+  });
   return result.data;
 };
 

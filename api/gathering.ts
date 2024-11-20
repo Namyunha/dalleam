@@ -21,6 +21,27 @@ export const getGatherings = async ({
   return result.data;
 };
 
+export const getJoinedGatherings = async ({
+  pageParam,
+  completed,
+  reviewed,
+}: {
+  pageParam: number;
+  completed?: boolean;
+  reviewed?: boolean;
+}) => {
+  const result = await fetcher.get('/gatherings/joined', {
+    params: {
+      completed,
+      reviewed,
+      limit: 10,
+      sortOrder: 'desc',
+      offset: pageParam * 10,
+    },
+  });
+  return result.data;
+};
+
 export const getGatheringDetail = async (id: number) => {
   const result = await fetcher.get<Gathering>(`gatherings/${id}`);
   return result.data;

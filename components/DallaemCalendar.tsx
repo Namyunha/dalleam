@@ -8,7 +8,7 @@ import useFilterStore from '@/stores/filterStore';
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export type timeSlotProps = { time: string; date: string }; // date가 ISO 8601 문자열로 변경
+export type timeSlotProps = { time: string; date: string };
 
 type props = {
   date: string;

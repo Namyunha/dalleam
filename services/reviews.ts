@@ -6,7 +6,13 @@ import {
 } from '@/types/review';
 import { GatheringType } from '@/types/gathering';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getReviews, getScores, getGatheringReviews, postReviews } from '@/api/review';
+import {
+  getReviews,
+  getScores,
+  getGatheringReviews,
+  postReviews,
+  getAvailableReviews,
+} from '@/api/review';
 import { toast } from '@/components/toast/ToastManager';
 
 export const useReviewsInfiniteQuery = (queryKey: reviewQueryKeys, params: paramsType) => {
@@ -47,5 +53,36 @@ export const useReviewMutation = (review: GatheringReview, closeModal: () => voi
       closeModal();
       toast('리뷰 등록 완료');
     },
+  });
+};
+
+// export const useWrittenReviewsQuery = (userId: number) => {
+//   return useInfiniteQuery({
+//     queryKey: ['writtenReviews'],
+//     queryFn: ({ pageParam }) => getReviews(userId, pageParam),
+//     initialPageParam: 0,
+//     enabled: false,
+//     getNextPageParam: (lastPage, allPages) => {
+//       if (lastPage.length < 5) {
+//         return undefined;
+//       }
+//       return allPages.flat().length;
+//     },
+//   });
+// };
+
+export const useAvailableReviews = async () => {
+  return useInfiniteQuery({
+    queryKey: ['newReviews'],
+    queryFn: ({ pageParam }) => getAvailableReviews(pageParam),
+    initialPageParam: 0,
+    enabled: false,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < 10) {
+        return undefined;
+      }
+      return allPages.flat().length;
+    },
+    staleTime: 1000 * 60 * 5,
   });
 };

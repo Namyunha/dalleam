@@ -1,17 +1,18 @@
 import React from 'react';
-
-import MyGatherings from './_components/MyGatherings';
-import { getInstance } from '@/utils/axios';
+import MyPages from './_components/MyPages';
+import { getJoinedGatheringPrefetchQuery } from '@/api/prefetch';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getUser } from '@/api/user';
 
 export default async function MyGatheringPage() {
-  const instance = getInstance();
+  const data = await getUser();
+  if (!data.id) '데이터를 불러오는 중입니다';
 
-  const myGatherings = await instance('/gatherings/joined', {
-    params: {
-      limit: 10,
-      sortOrder: 'desc',
-    },
-  });
+  const queryClient = await getJoinedGatheringPrefetchQuery(data.id);
 
-  return <MyGatherings initialMyGatherings={myGatherings.data} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <MyPages />
+    </HydrationBoundary>
+  );
 }

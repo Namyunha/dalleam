@@ -1,7 +1,11 @@
+import { useJoinedGatheringInfiniteQuery, useMyGatheringInfiniteQuery } from '@/services/gathering';
 import useFilterStore from '@/stores/filterStore';
+import useModal from '@/hooks/useModal';
 import { gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
 import { paramsType, reviewQueryKeys, reviewScoresQueryKeys } from '@/types/review';
 import { convertSortType } from '@/utils/convertData';
+import { useMyPageFilterStore } from '@/stores/myPageFilterStore';
+import { useReviewsInfiniteQuery } from '@/services/reviews';
 
 export const useParams = ({ isGathering }: { isGathering: boolean }) => {
   const { type, location, date, reviewSortBy, sortBy } = useFilterStore();
@@ -24,5 +28,73 @@ export const useParams = ({ isGathering }: { isGathering: boolean }) => {
     reviewScoresQueryKeys,
     gatheringQueryKeys,
     savedGatheringQueryKeys,
+  };
+};
+
+export const useMyPageParams = ({ userId }: { userId: number }) => {
+  const { type: myPageType, subTab } = useMyPageFilterStore();
+  const { modalRef, handleOpenModal, handleCloseModal } = useModal();
+  const {
+    data: joinedGatheringsData,
+    fetchNextPage: joinedGatheringsFetchNextPage,
+    isFetching: joinedGatheringsIsFetching,
+    hasNextPage: joinedGatheringsHasNextPage,
+  } = useJoinedGatheringInfiniteQuery({
+    userId,
+    reviewed: false,
+  });
+  const {
+    data: myGatheringsData,
+    fetchNextPage: myGatheringsFetchNextPage,
+    isFetching: myGatheringsIsFetching,
+    hasNextPage: myGatheringsHasNextPage,
+  } = useMyGatheringInfiniteQuery({
+    userId,
+  });
+  const {
+    data: writtenReviewData,
+    fetchNextPage: writtenReviewFetchNextPage,
+    isFetching: writtenReviewIsFetching,
+    hasNextPage: writtenReviewHasNextPage,
+  } = useReviewsInfiniteQuery([['reviews'], { userId }], { userId, limit: 10 });
+  let data = joinedGatheringsData;
+  let fetchNextPage = joinedGatheringsFetchNextPage;
+  let isFetching = joinedGatheringsIsFetching;
+  let hasNextPage = joinedGatheringsHasNextPage;
+  switch (myPageType) {
+    case 'joined':
+      data = joinedGatheringsData;
+      fetchNextPage = joinedGatheringsFetchNextPage;
+      isFetching = joinedGatheringsIsFetching;
+      hasNextPage = joinedGatheringsHasNextPage;
+      break;
+    case 'review':
+      if (subTab === 'available') {
+        data = joinedGatheringsData;
+        fetchNextPage = joinedGatheringsFetchNextPage;
+        isFetching = joinedGatheringsIsFetching;
+        hasNextPage = joinedGatheringsHasNextPage;
+      } else {
+        data = writtenReviewData;
+        fetchNextPage = writtenReviewFetchNextPage;
+        isFetching = writtenReviewIsFetching;
+        hasNextPage = writtenReviewHasNextPage;
+        isFetching = myGatheringsIsFetching;
+      }
+      break;
+    case 'createdBy':
+      data = myGatheringsData;
+      fetchNextPage = myGatheringsFetchNextPage;
+      hasNextPage = myGatheringsHasNextPage;
+      break;
+  }
+  return {
+    modalRef,
+    handleOpenModal,
+    handleCloseModal,
+    data,
+    fetchNextPage,
+    isFetching,
+    hasNextPage,
   };
 };

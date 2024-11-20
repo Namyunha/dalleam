@@ -1,78 +1,22 @@
-'use client';
-import React, { useEffect } from 'react';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
-
+import React from 'react';
 import ReviewCard from '@/components/card/ReviewCard';
-
+import { InfiniteData } from '@tanstack/react-query';
 import { Review } from '@/types/review';
-import { getInstance } from '@/utils/axios';
 
-type Props = {
-  initialWrittenReviews: Review[];
-  userId: number;
-};
-
-export default function WrittenReviews({ initialWrittenReviews, userId }: Props) {
-  const { ref, inView } = useInView();
-  const queryClient = useQueryClient();
-  const getWrittenReviews = async (offset: number) => {
-    const instance = getInstance();
-
-    const res = await instance('/reviews', {
-      params: {
-        userId: userId,
-        limit: 10,
-        offset: offset,
-      },
-    });
-
-    return res.data;
-  };
-
-  const {
-    data: writtenReviews,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ['writtenReviews'],
-    queryFn: ({ pageParam }) => getWrittenReviews(pageParam),
-    initialPageParam: 0,
-    initialData: {
-      pages: [initialWrittenReviews],
-      pageParams: [0],
-    },
-    enabled: false,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < 5) {
-        return undefined;
-      }
-
-      return allPages.flat().length;
-    },
-  });
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
-
+export default function WrittenReviews({ data }: { data?: InfiniteData<any> }) {
   return (
     <div className="flex justify-center min-h-[60vh] bg-white">
-      {writtenReviews.pages.flat().length === 0 ? (
+      {!data ? (
         <div className="flex items-center">
           <span className="text-sm font-medium text-gray-500">아직 작성한 리뷰가 없어요</span>
         </div>
       ) : (
         <div className="w-full flex flex-col gap-6">
-          {writtenReviews.pages.flat().map((review, i) => {
+          {data.pages.flat().map((review, i) => {
             return <ReviewCard key={i} {...review} isMyPage />;
           })}
         </div>
       )}
-      {!isFetching && hasNextPage && <div ref={ref}></div>}
     </div>
   );
 }
