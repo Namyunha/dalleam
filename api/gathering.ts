@@ -1,5 +1,5 @@
 import { gatheringSchema } from '@/constants/formSchema';
-import { Gathering, Participant } from '@/types/gathering';
+import { Gathering, JoinedGathering, Participant } from '@/types/gathering';
 import { paramsType } from '@/types/review';
 import { getInstance } from '@/utils/axios';
 
@@ -29,7 +29,7 @@ export const getJoinedGatherings = async ({
   pageParam: number;
   completed?: boolean;
   reviewed?: boolean;
-}) => {
+}): Promise<JoinedGathering[]> => {
   const result = await fetcher.get('/gatherings/joined', {
     params: {
       completed,
@@ -42,8 +42,8 @@ export const getJoinedGatherings = async ({
   return result.data;
 };
 
-export const getGatheringDetail = async (id: number) => {
-  const result = await fetcher.get<Gathering>(`gatherings/${id}`);
+export const getGatheringDetail = async (id: number): Promise<Gathering> => {
+  const result = await fetcher.get(`gatherings/${id}`);
   return result.data;
 };
 
@@ -69,8 +69,8 @@ export const cancelGathering = async (id: number) => {
   return response.data;
 };
 
-export const getGatheringParticipants = async (id: number) => {
-  const result = await fetcher.get<Participant[]>(`gatherings/${id}/participants`, {
+export const getGatheringParticipants = async (id: number): Promise<Participant[]> => {
+  const result = await fetcher.get(`gatherings/${id}/participants`, {
     params: { limit: 100 },
   });
   return result.data;

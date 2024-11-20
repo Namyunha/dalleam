@@ -20,7 +20,7 @@ export const getReviews = async ({
   return result.data;
 };
 
-export const getWrittenReviews = async (userId: number, pageParam: number) => {
+export const getWrittenReviews = async (userId: number, pageParam: number): Promise<Review[]> => {
   const result = await fetcher.get('/reviews', {
     params: {
       userId: userId,
