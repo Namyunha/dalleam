@@ -1,7 +1,7 @@
 // MyGatheringList.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMyPageFilterStore } from '@/stores/myPageFilterStore';
 import JoinedReviews from './JoinedReviews';
 import AvailableReview from './AvailableReview';
@@ -10,7 +10,15 @@ import CreatedGatherings from './CreatedGatherings';
 // 다른 import들...
 
 export default function MyGatheringList() {
-  const { type, subTab } = useMyPageFilterStore();
+  const { type, setType, subTab, setSubTab } = useMyPageFilterStore();
+  useEffect(() => {
+    setType('joined');
+    setSubTab('available');
+    return () => {
+      setType('joined');
+      setSubTab('available');
+    };
+  }, []);
   return (
     <>
       {type === 'joined' && <JoinedReviews />}
