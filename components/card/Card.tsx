@@ -6,6 +6,7 @@ import { format, addHours } from 'date-fns';
 import Person from '/public/icons/gathering/person.svg';
 import Bye from '/public/icons/gathering/bye.svg';
 import Stroke from '/public/icons/gathering/line.svg';
+import useUserStore from '@/stores/userStore';
 
 import Button from '../Button';
 import ChipState from '../chip/ChipState';
@@ -25,6 +26,7 @@ type Props = {
 const Card = ({ normal, gathering, openModal, isReviewed }: Props) => {
   const { setId } = useGatheringId();
   const { setType } = useModalType();
+  const { user } = useUserStore();
 
   const { formattedDate, formattedTime } = formatDateTime(gathering.dateTime) ?? {
     formattedDate: '',
@@ -97,20 +99,22 @@ const Card = ({ normal, gathering, openModal, isReviewed }: Props) => {
             </div>
           </div>
           {/* 버튼 컴포넌트 */}
-          <Button
-            size="sm"
-            fillState="full"
-            variant={`${isReviewed ? 'gray' : 'orange'}`}
-            onClick={() => {
-              if (!isReviewed) {
-                setType('review');
-                openModal && openModal();
-                setId(gathering.id);
-              }
-            }}
-          >
-            리뷰 작성하기
-          </Button>
+          {gathering.createdBy !== user?.id && (
+            <Button
+              size="sm"
+              fillState="full"
+              variant={`${isReviewed ? 'gray' : 'orange'}`}
+              onClick={() => {
+                if (!isReviewed) {
+                  setType('review');
+                  openModal && openModal();
+                  setId(gathering.id);
+                }
+              }}
+            >
+              리뷰 작성하기
+            </Button>
+          )}
         </div>
       </div>
       <Stroke className="w-full" />

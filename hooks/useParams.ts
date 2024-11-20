@@ -31,70 +31,74 @@ export const useParams = ({ isGathering }: { isGathering: boolean }) => {
   };
 };
 
-export const useMyPageParams = ({ userId }: { userId: number }) => {
-  const { type: myPageType, subTab } = useMyPageFilterStore();
-  const { modalRef, handleOpenModal, handleCloseModal } = useModal();
-  const {
-    data: joinedGatheringsData,
-    fetchNextPage: joinedGatheringsFetchNextPage,
-    isFetching: joinedGatheringsIsFetching,
-    hasNextPage: joinedGatheringsHasNextPage,
-  } = useJoinedGatheringInfiniteQuery({
-    userId,
-    reviewed: false,
-  });
-  const {
-    data: myGatheringsData,
-    fetchNextPage: myGatheringsFetchNextPage,
-    isFetching: myGatheringsIsFetching,
-    hasNextPage: myGatheringsHasNextPage,
-  } = useMyGatheringInfiniteQuery({
-    userId,
-  });
-  const {
-    data: writtenReviewData,
-    fetchNextPage: writtenReviewFetchNextPage,
-    isFetching: writtenReviewIsFetching,
-    hasNextPage: writtenReviewHasNextPage,
-  } = useReviewsInfiniteQuery([['reviews'], { userId }], { userId, limit: 10 });
-  let data = joinedGatheringsData;
-  let fetchNextPage = joinedGatheringsFetchNextPage;
-  let isFetching = joinedGatheringsIsFetching;
-  let hasNextPage = joinedGatheringsHasNextPage;
-  switch (myPageType) {
-    case 'joined':
-      data = joinedGatheringsData;
-      fetchNextPage = joinedGatheringsFetchNextPage;
-      isFetching = joinedGatheringsIsFetching;
-      hasNextPage = joinedGatheringsHasNextPage;
-      break;
-    case 'review':
-      if (subTab === 'available') {
-        data = joinedGatheringsData;
-        fetchNextPage = joinedGatheringsFetchNextPage;
-        isFetching = joinedGatheringsIsFetching;
-        hasNextPage = joinedGatheringsHasNextPage;
-      } else {
-        data = writtenReviewData;
-        fetchNextPage = writtenReviewFetchNextPage;
-        isFetching = writtenReviewIsFetching;
-        hasNextPage = writtenReviewHasNextPage;
-        isFetching = myGatheringsIsFetching;
-      }
-      break;
-    case 'createdBy':
-      data = myGatheringsData;
-      fetchNextPage = myGatheringsFetchNextPage;
-      hasNextPage = myGatheringsHasNextPage;
-      break;
-  }
-  return {
-    modalRef,
-    handleOpenModal,
-    handleCloseModal,
-    data,
-    fetchNextPage,
-    isFetching,
-    hasNextPage,
-  };
-};
+// export const useMyPageParams = ({ userId }: { userId: number }) => {
+//   const { type: myPageType, subTab } = useMyPageFilterStore();
+//   const { modalRef, handleOpenModal, handleCloseModal } = useModal();
+//   const {
+//     data: joinedGatheringsData,
+//     fetchNextPage: joinedGatheringsFetchNextPage,
+//     isFetching: joinedGatheringsIsFetching,
+//     hasNextPage: joinedGatheringsHasNextPage,
+//   } = useJoinedGatheringInfiniteQuery({
+//     userId,
+//     reviewed: false,
+//   });
+//   const {
+//     data: myGatheringsData,
+//     fetchNextPage: myGatheringsFetchNextPage,
+//     isFetching: myGatheringsIsFetching,
+//     hasNextPage: myGatheringsHasNextPage,
+//   } = useMyGatheringInfiniteQuery({
+//     userId,
+//   });
+//   const {
+//     data: writtenReviewData,
+//     fetchNextPage: writtenReviewFetchNextPage,
+//     isFetching: writtenReviewIsFetching,
+//     hasNextPage: writtenReviewHasNextPage,
+//   } = useReviewsInfiniteQuery([['reviews'], { userId }], { userId, limit: 10 });
+//   let data = joinedGatheringsData;
+//   let fetchNextPage = joinedGatheringsFetchNextPage;
+//   let isFetching = joinedGatheringsIsFetching;
+//   let hasNextPage = joinedGatheringsHasNextPage;
+//   switch (myPageType) {
+//     case 'joined':
+//       data = joinedGatheringsData;
+//       fetchNextPage = joinedGatheringsFetchNextPage;
+//       isFetching = joinedGatheringsIsFetching;
+//       hasNextPage = joinedGatheringsHasNextPage;
+//       console.log('joined data = ', data);
+//       break;
+//     case 'review':
+//       if (subTab === 'available') {
+//         data = joinedGatheringsData;
+//         fetchNextPage = joinedGatheringsFetchNextPage;
+//         isFetching = joinedGatheringsIsFetching;
+//         hasNextPage = joinedGatheringsHasNextPage;
+//       } else {
+//         data = writtenReviewData;
+//         fetchNextPage = writtenReviewFetchNextPage;
+//         isFetching = writtenReviewIsFetching;
+//         hasNextPage = writtenReviewHasNextPage;
+//         isFetching = myGatheringsIsFetching;
+//       }
+
+//       console.log('available data = ', data);
+//       break;
+//     case 'createdBy':
+//       data = myGatheringsData;
+//       fetchNextPage = myGatheringsFetchNextPage;
+//       hasNextPage = myGatheringsHasNextPage;
+//       console.log('myPage data = ', data);
+//       break;
+//   }
+//   return {
+//     modalRef,
+//     handleOpenModal,
+//     handleCloseModal,
+//     data,
+//     fetchNextPage,
+//     isFetching,
+//     hasNextPage,
+//   };
+// };
