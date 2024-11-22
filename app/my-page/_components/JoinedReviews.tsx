@@ -2,13 +2,9 @@ import React, { useEffect } from 'react';
 import Card from '@/components/card/Card';
 import { useJoinedGatheringInfiniteQuery } from '@/services/gathering';
 import useUserStore from '@/stores/userStore';
-import useModal from '@/hooks/useModal';
-import Modal from '@/components/Modal';
-import GatheringReviewModal from '@/app/_components/gatheringReviewModal/GatheringReviewModal';
 import { useInView } from 'react-intersection-observer';
 
 export default function JoinedReviews() {
-  const { modalRef, handleOpenModal, handleCloseModal } = useModal();
   const { ref, inView } = useInView();
   const { user } = useUserStore();
   const userId = user?.id;
@@ -33,22 +29,20 @@ export default function JoinedReviews() {
           <div className="flex flex-col gap-6">
             {data?.pages.map((page, pageIndex) =>
               page.map((gathering) => (
-                <Card
-                  normal={false}
-                  gathering={gathering}
-                  key={`${pageIndex}-${gathering.id}`} // 고유한 키 생성
-                  openModal={() => handleOpenModal()}
-                  isReviewed={gathering.isReviewed}
-                />
+                <>
+                  <Card
+                    normal={false}
+                    gathering={gathering}
+                    key={`${pageIndex}-${gathering.id}`} // 고유한 키 생성
+                    isReviewed={gathering.isReviewed}
+                  />
+                </>
               )),
             )}
           </div>
         )}
       </div>
       {!isFetching && hasNextPage && <div ref={ref}></div>}
-      <Modal ref={modalRef}>
-        <GatheringReviewModal closeModal={handleCloseModal} />
-      </Modal>
     </>
   );
 }

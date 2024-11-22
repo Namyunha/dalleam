@@ -24,7 +24,7 @@ export const useGatheringInfiniteQuery = (
       return lastPage.length === 10 ? allPages.length : undefined;
     },
     initialPageParam: 0,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
   });
 };
 
@@ -44,7 +44,7 @@ export const useJoinedGatheringInfiniteQuery = ({
       return lastPage.length === 10 ? allPages.length : undefined;
     },
     initialPageParam: 0,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
   });
 };
 
@@ -57,7 +57,7 @@ export const useMyGatheringInfiniteQuery = ({ userId }: { userId?: number }) => 
       return lastPage.length === 10 ? allPages.length : undefined;
     },
     initialPageParam: 0,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
   });
 };
 
