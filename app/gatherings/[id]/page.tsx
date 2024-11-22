@@ -38,11 +38,6 @@ export default function GatheringDetail({ params }: Props) {
       </div>
     );
   }
-  console.log(
-    'gatheringParticipantsData - ',
-    gatheringParticipantsData.map(({ userId }) => userId).includes(user?.id as number),
-  );
-  console.log('user?.id = ', user?.id);
 
   const buttonProps = {
     gatheringId,

@@ -1,17 +1,9 @@
 'use client';
 
 import { useMyPageFilterStore } from '@/stores/myPageFilterStore';
-import {
-  myPageFilterNameType,
-  myPageFilterType,
-  myPageSubType,
-  myPageSubTabType,
-} from '@/types/gathering';
-import Chip from '@/components/chip/Chip';
+import { myPageFilterNameType, myPageFilterType } from '@/types/gathering';
 
-export const convertTab = (
-  type: myPageFilterType | myPageSubType,
-): myPageFilterNameType | myPageSubTabType => {
+export const convertTab = (type: myPageFilterType): myPageFilterNameType => {
   switch (type) {
     case 'joined':
       return '나의 모임';
@@ -19,18 +11,13 @@ export const convertTab = (
       return '나의 리뷰';
     case 'createdBy':
       return '내가 만든 모임';
-    case 'available':
-      return '작성 가능한 리뷰';
-    case 'written':
-      return '작성한 리뷰';
   }
 };
 
 export default function Menu() {
-  const { type, setType, subTab, setSubTab } = useMyPageFilterStore();
+  const { type, setType } = useMyPageFilterStore();
 
   const myPageTab: myPageFilterType[] = ['joined', 'review', 'createdBy'];
-  const myPageSubTab: myPageSubType[] = ['available', 'written'];
 
   return (
     <div className="flex flex-col">
@@ -49,22 +36,6 @@ export default function Menu() {
           );
         })}
       </div>
-      {type === 'review' && (
-        <div className="flex flex-col gap-6 pt-4 pb-6">
-          <div className="flex gap-2 ">
-            {myPageSubTab.map((subMenu, idx) => (
-              <Chip
-                key={idx}
-                onClick={() => setSubTab(subMenu)}
-                color={`${subMenu === subTab ? 'navy' : 'gray'}`}
-                size="lg"
-              >
-                {convertTab(subMenu)}
-              </Chip>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

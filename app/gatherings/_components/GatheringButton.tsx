@@ -7,10 +7,12 @@ import { useRouter } from 'next/navigation';
 import useModal from '@/hooks/useModal';
 import { useParams } from '@/hooks/useParams';
 import { useGatheringBtn } from '@/hooks/useGatheringBtn';
-import clsx from 'clsx';
 import Modal from '@/components/Modal';
 import LoginAlert from '@/components/loginAlert/LoginAlert';
 import GatheringReviewModal from '@/app/_components/gatheringReviewModal/GatheringReviewModal';
+import { useQueryClient } from '@tanstack/react-query';
+import { Review } from '@/types/review';
+import clsx from 'clsx';
 
 type Props = {
   gatheringId: number;
@@ -24,7 +26,11 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
   const router = useRouter();
   const { modalRef, handleOpenModal, handleCloseModal } = useModal();
   const { gatheringQueryKeys } = useParams({ isGathering: true });
-
+  const queryClient = useQueryClient();
+  const queryKey = [['reviews', 'gathering'], { id: gatheringId }];
+  const query = queryClient.getQueryData(queryKey) as Review[];
+  const reviewedUser = query?.find((el) => el.User.id === userId);
+  console.log('reviewedUser = ', !reviewedUser);
   const {
     activateGathering: { joinMutate, leaveMutate, cancelMutate, handleShare },
     pendingGathering: { isJoining, isLeaving, isCanceling },
@@ -38,6 +44,7 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
   let buttonState: 'full' | 'empty' = 'full';
   let clickEvent = !userId ? handleOpenModal : joinMutate;
   let subClickEvent = handleShare;
+  let buttonActivate = isFull && !isJoined && hostId !== userId;
 
   if (hostId === userId) {
     clickEvent = cancelMutate;
@@ -49,22 +56,31 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
     content = isLeaving ? '참여 취소중..' : '참여 취소하기';
     subContent = '리뷰 쓰기';
   }
+
   return (
     <>
       <div className="space-x-2 flex">
         <Button
-          className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
+          className={clsx(
+            'text-sm sm:w-1/2 md:w-[110px] h-[44px]',
+            buttonActivate ? 'cursor-not-allowed hover:brightness-100' : 'cursor-pointer',
+          )}
           fillState={buttonState}
           onClick={() => clickEvent()}
-          disabled={isFull && !isJoined && hostId !== userId ? true : false}
-          variant={isFull && !isJoined && hostId !== userId ? 'gray' : undefined}
+          disabled={buttonActivate ? true : false}
+          variant={buttonActivate ? 'gray' : 'orange'}
         >
           {content}
         </Button>
         <Button
-          className="text-sm sm:w-1/2 md:w-[110px] h-[44px]"
+          className={clsx(
+            'text-sm sm:w-1/2 md:w-[110px] h-[44px]',
+            reviewedUser ? 'cursor-not-allowed hover:brightness-100' : 'cursor-pointer',
+          )}
           fillState="empty"
           onClick={() => subClickEvent()}
+          disabled={!!reviewedUser}
+          variant={reviewedUser ? 'gray' : 'orange'}
         >
           {subContent}
         </Button>
