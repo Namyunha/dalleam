@@ -7,7 +7,7 @@ const fetcher = getInstance();
 
 export const getGatherings = async ({
   pageParam,
-  params = { type: 'DALLAEMFIT', sortOrder: 'desc', sortBy: 'registrationEnd', limit: 10 },
+  params = { type: 'DALLAEMFIT', sortOrder: 'asc', sortBy: 'registrationEnd', limit: 10 },
 }: {
   pageParam: number;
   params?: paramsType;

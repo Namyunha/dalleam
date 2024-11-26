@@ -36,9 +36,6 @@ export default function GatheringButton({ gatheringId, isFull, hostId, isJoined,
     pendingGathering: { isJoining, isLeaving, isCanceling },
   } = useGatheringBtn({ gatheringId, back: router.back, gatheringQueryKeys });
 
-  console.log('isJoining = ', isJoined);
-  console.log('isFull = ', isFull);
-
   let content = isJoining ? '모임 참여중..' : '모임 참여하기';
   let subContent = '공유하기';
   let buttonState: 'full' | 'empty' = 'full';

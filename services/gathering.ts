@@ -78,12 +78,13 @@ export const useGatheringMutate = (
   });
 };
 
-export const useGatheringJoinMutation = (id: number) => {
+export const useGatheringJoinMutation = (id: number, queryKey: gatheringQueryKeys) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => joinGathering(id),
     onSuccess: async () => {
       await Promise.all([
+        queryClient.invalidateQueries({ queryKey }),
         queryClient.invalidateQueries({ queryKey: [['gathering'], { id }] }),
         queryClient.invalidateQueries({ queryKey: [['gathering', 'participants'], { id }] }),
       ]);
