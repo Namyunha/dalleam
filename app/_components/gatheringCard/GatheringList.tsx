@@ -12,6 +12,13 @@ export default function GatheringCList() {
   const { data, fetchNextPage, isLoading, isError, isFetchingNextPage, hasNextPage } =
     useGatheringInfiniteQuery(gatheringQueryKeys, params);
   const observerRef = useInfiniteObserver(fetchNextPage, { threshold: 0.2 });
+  if (isError) return <div>데이터를 불러올 수 없습니다.</div>;
+  if (!data?.pages[0].length)
+    return (
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        불러올 데이터가 없습니다.
+      </div>
+    );
   return (
     <div className="flex flex-col items-start gap-6 self-stretch">
       <FilterTab isReviewPage={false} />
