@@ -13,7 +13,10 @@ type Props = {
 };
 
 export const useGatheringBtn = ({ gatheringId, back, gatheringQueryKeys }: Props) => {
-  const { mutate: joinMutate, isPending: isJoining } = useGatheringJoinMutation(gatheringId);
+  const { mutate: joinMutate, isPending: isJoining } = useGatheringJoinMutation(
+    gatheringId,
+    gatheringQueryKeys,
+  );
   const { mutate: leaveMutate, isPending: isLeaving } = useGatheringLeavingMutation(gatheringId);
   const { mutate: cancelMutate, isPending: isCanceling } = useGatheringCancelingMutation(
     gatheringId,
