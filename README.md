@@ -79,6 +79,30 @@
 
 ## 페이지 시연
 
+### 남윤하
+
+| 모임 만들기, 리뷰 목록 |
+|----------|
+
+- 모임만들기
+![모임 만들기](https://github.com/user-attachments/assets/b2f55ab2-6663-45e1-b085-91c8e13fa85e)
+  **1. 리액트 캘린더 적용 <br>**
+  **2. react-hook-form을 이용해 유효성 검사 및 입력한 데이터 가져오기**
+
+- 리뷰 목록
+![리뷰 목록 2](https://github.com/user-attachments/assets/049bef3b-e43a-4ff0-afc5-1707b856a352) <br>
+![리뷰 목록 1](https://github.com/user-attachments/assets/bed2dfc8-b8cd-4317-af6c-21202f12502f)
+
+<br>
+  1. 무한 스크롤로 리뷰목록 불러오기 (SSR로 받아온 데이터를 클라이언트 컴포넌트에서 나타내기)
+  <br>
+  2. Promise.All을 이용해서 리뷰 점수와 리뷰목록을 동시에 prefetch 
+  <br>
+  3. 로딩시 리액트 스켈레톤 구현
+    
+  
+
+
 ### 김시몬 
 
 | 초기화면 |
