@@ -75,67 +75,33 @@
   - **dev** 브랜치는 개발 단계에서 git-flow의 main 역할을 하는 브랜치입니다.
   - **feat** 브랜치는 기능 단위로 독립적인 개발 환경을 위하여 사용하고 merge 후 각 브랜치를 삭제해주었습니다.
 
+<br>
+
 ## 페이지 시연
 
-### 김시몬 
+### 남윤하
 
-| 초기화면 |
+| 모임 만들기, 리뷰 목록 |
 |----------|
 
-- 모임목록 불러오기 (무한 스크롤 적용)
-![모임 무한스크롤 적용](https://github.com/user-attachments/assets/d7586c97-97b2-4518-b21e-bb320f06a7b6)
+- 모임만들기
+![모임 만들기](https://github.com/user-attachments/assets/b2f55ab2-6663-45e1-b085-91c8e13fa85e)
+  **1. 리액트 캘린더 적용 <br>**
+  **2. react-hook-form을 이용해 유효성 검사 및 입력한 데이터 가져오기**
 
-- 메인화면 (**찜하기는 남윤하 구현**)
-  ![메인화면](https://github.com/user-attachments/assets/00eaf310-a473-433a-bee5-76c7f0975659)
-
-
-### 오동혁r>
-
-## 기술 스택
-
-### **프로그래밍 언어**
-
-- ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=JavaScript&logoColor=black&style=flat-square)
-- ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=TypeScript&logoColor=white&style=flat-square)
-
-### **프레임워크**
-
-- ![React](https://img.shields.io/badge/-React-61DAFB?logo=React&logoColor=black&style=flat-square)
-- ![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=next.js&logoColor=white&style=flat-square)
-
-### **상태 관리**
-
-- ![React Query](https://img.shields.io/badge/-React%20Query-FF4154?logo=React%20Query&logoColor=white&style=flat-square)
-- ![Zustand](https://img.shields.io/badge/-Zustand-FFDD00?style=flat-square&logoColor=black)
-
-### **라이브러리**
-
-- ![React Hook Form](https://img.shields.io/badge/-React%20Hook%20Form-EC5990?style=flat-square&logo=react&logoColor=white)
-
-### **테스트 도구**
-
-- ![Jest](https://img.shields.io/badge/-Jest-C21325?logo=Jest&logoColor=white&style=flat-square)
-- ![React Testing Library](https://img.shields.io/badge/-React%20Testing%20Library-E33332?logo=testing-library&logoColor=white&style=flat-square)
-
-### **스타일링 및 애니메이션**
-
-- ![Framer Motion](https://img.shields.io/badge/-Framer%20Motion-0055FF?logo=framer&logoColor=white&style=flat-square)
-- ![Tailwind CSS](https://img.shields.io/badge/-Tailwind%20CSS-38B2AC?logo=tailwind-css&logoColor=white&style=flat-square)
+- 리뷰 목록
+![리뷰 목록 2](https://github.com/user-attachments/assets/049bef3b-e43a-4ff0-afc5-1707b856a352) <br>
+![리뷰 목록 1](https://github.com/user-attachments/assets/bed2dfc8-b8cd-4317-af6c-21202f12502f)
 
 <br>
+  1. 무한 스크롤로 리뷰목록 불러오기 (SSR로 받아온 데이터를 클라이언트 컴포넌트에서 나타내기)
+  <br>
+  2. Promise.All을 이용해서 리뷰 점수와 리뷰목록을 동시에 prefetch 
+  <br>
+  3. 로딩시 리액트 스켈레톤 구현
+    
+  
 
-
-## 브랜치 전략
-
-- Git-flow 전략을 기반으로 main, develop 브랜치와 feature 보조 브랜치를 운용했습니다.
-- main, develop, Feat 브랜치로 나누어 개발을 하였습니다.
-  - **main** 브랜치는 배포 단계에서만 사용하는 브랜치입니다.
-  - **dev** 브랜치는 개발 단계에서 git-flow의 main 역할을 하는 브랜치입니다.
-  - **feat** 브랜치는 기능 단위로 독립적인 개발 환경을 위하여 사용하고 merge 후 각 브랜치를 삭제해주었습니다.
-
-<br>
-
-## 페이지 시연
 
 ### 김시몬 
 
