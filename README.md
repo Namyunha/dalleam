@@ -77,56 +77,67 @@
 
 <br>
 
+## 실행 방법
+
+### 저장소 클론
+
+git clone https://github.com/Namyunha/dalleam.git
+
+### 새 터미널 창에서 프론트엔드 실행
+
+npm run build <br>
+npm install <br>
+npm start
+<br>
+
 ## 페이지 시연
 
 ### 남윤하
 
-| 모임 만들기, 리뷰 목록 |
-|----------|
+| 모임 만들기, 리뷰 목록, 찜한 모임 |
+| --------------------------------- |
 
 - 모임만들기
-![모임 만들기](https://github.com/user-attachments/assets/b2f55ab2-6663-45e1-b085-91c8e13fa85e)
+  ![모임 만들기](https://github.com/user-attachments/assets/b2f55ab2-6663-45e1-b085-91c8e13fa85e)
   **1. 리액트 캘린더 적용 <br>**
   **2. react-hook-form을 이용해 유효성 검사 및 입력한 데이터 가져오기**
 
 - 리뷰 목록
-![리뷰 목록 2](https://github.com/user-attachments/assets/049bef3b-e43a-4ff0-afc5-1707b856a352) <br>
-![리뷰 목록 1](https://github.com/user-attachments/assets/bed2dfc8-b8cd-4317-af6c-21202f12502f)
+  ![리뷰 목록 2](https://github.com/user-attachments/assets/049bef3b-e43a-4ff0-afc5-1707b856a352) <br>
+  ![리뷰 목록 1](https://github.com/user-attachments/assets/bed2dfc8-b8cd-4317-af6c-21202f12502f)
 
-<br>
   1. 무한 스크롤로 리뷰목록 불러오기 (SSR로 받아온 데이터를 클라이언트 컴포넌트에서 나타내기)
-  <br>
-  2. Promise.All을 이용해서 리뷰 점수와 리뷰목록을 동시에 prefetch 
-  <br>
-  3. 로딩시 리액트 스켈레톤 구현
-    
-  
+     <br>
+  1. Promise.All을 이용해서 리뷰 점수와 리뷰목록을 동시에 prefetch
+     <br>
+  1. 로딩시 리액트 스켈레톤 구현
+     <br>
 
+- 찜한 목록
+  ![alt text](<모임 찜1-1.gif>)
+  ![alt text](<모임 찜 2.gif>)
 
-### 김시몬 
+1. zustand를 이용해서 찜 목록 구현
+2. 회원일 때, 비회원일 때 찜 했을 때, 기능 차이 구현
+
+### 김시몬
 
 | 초기화면 |
-|----------|
+| -------- |
 
 - 모임목록 불러오기 (무한 스크롤 적용)
-![모임 무한스크롤 적용](https://github.com/user-attachments/assets/d7586c97-97b2-4518-b21e-bb320f06a7b6)
+  ![모임 무한스크롤 적용](https://github.com/user-attachments/assets/d7586c97-97b2-4518-b21e-bb320f06a7b6)
 
 - 메인화면 (**찜하기는 남윤하 구현**)
   ![메인화면](https://github.com/user-attachments/assets/00eaf310-a473-433a-bee5-76c7f0975659)
 
-
 ### 오동혁
 
 | 로그인, 회원가입 |
-|----------|
+| ---------------- |
 
 - 회원가입 하기
-![회원가입](https://github.com/user-attachments/assets/63ff7e53-397c-4454-801d-ff4015b49042)
-
+  ![회원가입](https://github.com/user-attachments/assets/63ff7e53-397c-4454-801d-ff4015b49042)
 
 - 로그인 하기
-![로그인](https://github.com/user-attachments/assets/5896c093-6815-497c-9432-8f28dbe131d6)
-
-
-
-
+  ![로그인](https://github.com/user-attachments/assets/5896c093-6815-497c-9432-8f28dbe131d6)
