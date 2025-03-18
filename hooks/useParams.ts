@@ -1,15 +1,13 @@
 import useFilterStore from '@/stores/filterStore';
-import { gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
-import { paramsType, reviewQueryKeys, reviewScoresQueryKeys } from '@/types/review';
+import { paramsType } from '@/types/review';
 import { convertSortType } from '@/utils/convertData';
+import { getQueryKeys } from '@/api/queryKeys';
 
 export const useParams = ({ isGathering }: { isGathering: boolean }) => {
   const { type, location, date, reviewSortBy, sortBy } = useFilterStore();
-  let queryKeys = { type, location, date, sortBy: isGathering ? sortBy : reviewSortBy };
-  let gatheringQueryKeys: gatheringQueryKeys = [['gathering'], queryKeys];
-  let savedGatheringQueryKeys: savedGatheringQueryKeys = [['gathering', 'saved'], queryKeys];
-  let reviewQueryKeys: reviewQueryKeys = [['reviews'], queryKeys];
-  let reviewScoresQueryKeys: reviewScoresQueryKeys = [['reviews', 'scores'], queryKeys];
+  const { gatheringQueryKeys, savedGatheringQueryKeys, reviewQueryKeys, reviewScoresQueryKeys } =
+    getQueryKeys(isGathering);
+
   let params: paramsType = {
     limit: 10,
     type,

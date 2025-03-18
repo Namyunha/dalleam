@@ -14,6 +14,7 @@ import {
   getAvailableReviews,
 } from '@/api/review';
 import { toast } from '@/components/toast/ToastManager';
+import { getQueryKeys } from '@/api/queryKeys';
 
 export const useReviewsInfiniteQuery = (queryKey: reviewQueryKeys, params: paramsType) => {
   return useInfiniteQuery({
@@ -36,19 +37,21 @@ export const useScoresQuery = (queryKey: reviewScoresQueryKeys, typeTab: Gatheri
 };
 
 export const useGatheringReviewsQuery = (id: number) => {
+  const { gatheringReviewQueryKeys } = getQueryKeys(false, id);
   return useQuery({
-    queryKey: [['reviews', 'gathering'], { id }],
+    queryKey: gatheringReviewQueryKeys,
     queryFn: () => getGatheringReviews(id),
   });
 };
 
 export const useReviewMutation = (review: GatheringReview, closeModal: () => void) => {
   const queryClient = useQueryClient();
+  const { gatheringReviewQueryKeys } = getQueryKeys(false, review.gatheringId);
   return useMutation({
     mutationFn: async () => postReviews(review),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [['reviews', 'gathering'], { id: review.gatheringId }],
+        queryKey: gatheringReviewQueryKeys,
       });
       closeModal();
       toast('리뷰 등록 완료');

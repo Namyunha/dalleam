@@ -27,6 +27,11 @@ export type Gathering = {
 
 export type myGatheringQueryKeys = [['gathering', 'joined']];
 
+export type participantQueryKeys = [['gathering', 'participants'], { id: number }];
+export type gatheringReviewQueryKeys = [['gathering', 'reviews'], { id: number }];
+
+export type gatheringDetailQueryKeys = [['gathering'], { id: number }];
+
 export type gatheringQueryKeys = [
   ['gathering'],
   {
