@@ -75,6 +75,8 @@
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.10",
     "mockdate": "^3.0.5",
+    "msw": "^2.7.3",
+    "msw-storybook-addon": "^2.0.4",
     "playwright": "^1.51.1",
     "postcss": "^8",
     "prettier": "^3.3.3",
@@ -83,5 +85,10 @@
     "ts-node": "^10.9.2",
     "typescript": "^5",
     "vitest": "^3.0.9"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
