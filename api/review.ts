@@ -1,5 +1,5 @@
 import { GatheringType } from '@/types/gathering';
-import { paramsType, Points, Review, GatheringReview } from '@/types/review';
+import { paramsType, Points, Review, GatheringReview, ReviewListType } from '@/types/review';
 import { getInstance } from '@/utils/axios';
 
 const fetcher = getInstance();
@@ -10,7 +10,7 @@ export const getReviews = async ({
 }: {
   pageParam: number;
   params?: paramsType;
-}): Promise<Review[]> => {
+}): Promise<ReviewListType[]> => {
   const encodedParams = {
     ...params,
     location: params.location ? encodeURIComponent(params.location) : undefined,
