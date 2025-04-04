@@ -15,6 +15,7 @@ const logout = () => {
 export default function NavButton() {
   const { dropdownRef, handleToggleDropdown } = useDropdown();
   const { user, hydrated } = useUserStore();
+  console.log('user = ', user);
 
   if (!hydrated) return null;
   return user ? (
