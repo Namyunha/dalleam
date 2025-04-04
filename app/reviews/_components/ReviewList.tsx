@@ -11,6 +11,7 @@ import { useInView } from 'react-intersection-observer';
 import { cn } from '@/utils/className';
 import { useParams } from '@/hooks/useParams';
 import FilterTab from '@/components/tab/FilterTab';
+import { Review } from '@/types/review';
 
 export default function ReviewList() {
   const topFog =
@@ -72,7 +73,7 @@ export default function ReviewList() {
             `${topFogOn && topFog} ${bottomFogOn && bottomFog} relative flex flex-col items-start gap-6 self-stretch`,
           )}
         >
-          {data?.pages[0].data.map((review, idx) => (
+          {data?.pages[0].data.map((review: Review, idx: number) => (
             <div key={idx} className="relative w-full">
               {idx === 0 && (
                 <div ref={topRef} className="w-full absolute z-20 -top-6 left-0 h-6"></div>
