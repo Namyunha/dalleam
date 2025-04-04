@@ -10,7 +10,7 @@ export const getReviews = async ({
 }: {
   pageParam: number;
   params?: paramsType;
-}): Promise<ReviewListType[]> => {
+}) => {
   const encodedParams = {
     ...params,
     location: params.location ? encodeURIComponent(params.location) : undefined,
