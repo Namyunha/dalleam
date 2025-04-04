@@ -18,6 +18,8 @@ export default function NavMenu() {
   const { hydrated: savedStoreHydrated, savedGatherings } = useSavedStore();
   const { user, hydrated: userStoreHydrated } = useUserStore();
 
+  console.log('savedGatherings - ', savedGatherings);
+
   const savedGatheringList = savedGatherings.filter(
     (savedGathering) => savedGathering.userId === user?.id || savedGathering.userId === 1,
   );

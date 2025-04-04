@@ -1,5 +1,15 @@
 import { GatheringType, Gathering, LocationType, SortType } from './gathering';
 
+export type ReviewListType = {
+  pageParams: [number];
+  pages: {
+    currentPage: number;
+    data: Review[]; // 리뷰 데이터 배열
+  }[];
+  totalItemCount: number;
+  totalPages: number;
+};
+
 export type Review = {
   teamId: string;
   id: number;

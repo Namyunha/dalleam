@@ -12,6 +12,7 @@ import { toast } from '@/components/toast/ToastManager';
 import { Gathering, gatheringQueryKeys, savedGatheringQueryKeys } from '@/types/gathering';
 import { paramsType } from '@/types/review';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getQueryKeys } from '@/api/queryKeys';
 
 export const useGatheringInfiniteQuery = (
   queryKey: gatheringQueryKeys | savedGatheringQueryKeys,
@@ -80,13 +81,14 @@ export const useGatheringMutate = (
 
 export const useGatheringJoinMutation = (id: number, queryKey: gatheringQueryKeys) => {
   const queryClient = useQueryClient();
+  const { participantQueryKeys, gatheringDetailQueryKeys } = getQueryKeys(false, id);
   return useMutation({
     mutationFn: async () => joinGathering(id),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey }),
-        queryClient.invalidateQueries({ queryKey: [['gathering'], { id }] }),
-        queryClient.invalidateQueries({ queryKey: [['gathering', 'participants'], { id }] }),
+        queryClient.invalidateQueries({ queryKey: gatheringDetailQueryKeys }),
+        queryClient.invalidateQueries({ queryKey: participantQueryKeys }),
       ]);
       toast('모임 참여 완료');
     },
@@ -95,12 +97,13 @@ export const useGatheringJoinMutation = (id: number, queryKey: gatheringQueryKey
 
 export const useGatheringLeavingMutation = (id: number) => {
   const queryClient = useQueryClient();
+  const { participantQueryKeys, gatheringDetailQueryKeys } = getQueryKeys(false, id);
   return useMutation({
     mutationFn: async () => leaveGathering(id),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: [['gathering'], { id }] }),
-        queryClient.invalidateQueries({ queryKey: [['gathering', 'participants'], { id }] }),
+        queryClient.invalidateQueries({ queryKey: gatheringDetailQueryKeys }),
+        queryClient.invalidateQueries({ queryKey: participantQueryKeys }),
       ]);
       toast('모임 취소 완료');
     },
@@ -126,16 +129,18 @@ export const useGatheringCancelingMutation = (
 };
 
 export const useGatheringDetailQuery = (id: number) => {
+  const { gatheringDetailQueryKeys } = getQueryKeys(false, id);
   return useQuery({
-    queryKey: [['gathering'], { id }],
+    queryKey: gatheringDetailQueryKeys,
     queryFn: async (): Promise<Gathering> => await getGatheringDetail(id),
     staleTime: 5 * 60 * 1000,
   });
 };
 
 export const useGatheringParticipantsQuery = (id: number) => {
+  const { participantQueryKeys } = getQueryKeys(false, id);
   return useQuery({
-    queryKey: [['gathering', 'participants'], { id }],
+    queryKey: participantQueryKeys,
     queryFn: async () => getGatheringParticipants(id),
     staleTime: 5 * 60 * 1000,
   });
