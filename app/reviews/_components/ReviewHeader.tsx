@@ -1,6 +1,7 @@
 import React from 'react';
 import ListHeader from '@/components/list/ListHeader';
 import Review from '/public/icons/review.svg';
+import ReviewsTabs from './ReviewsTabs';
 
 export default function ReviewHeader() {
   return (

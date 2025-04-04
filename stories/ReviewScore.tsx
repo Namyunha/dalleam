@@ -3,22 +3,22 @@
 import React, { useEffect } from 'react';
 import FillHeart from '/public/icons/gathering/fill_heart.svg';
 import { useMotionValue, useTransform, animate, motion } from 'framer-motion';
-import { useScoresQuery } from '@/services/reviews';
-import useFilterStore from '@/stores/filterStore';
-import Skeleton from 'react-loading-skeleton';
-import SkeletonScores from './skeletonComponents/SkeletonScores';
-import DeferredComponent from '@/components/DeferredComponent';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function ReviewScores() {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
-  const { date, type, location, reviewSortBy } = useFilterStore();
-
-  const { data, isLoading } = useScoresQuery(
-    [['reviews', 'scores'], { type, date, location, sortBy: reviewSortBy }],
-    type,
-  );
+  const data = [
+    {
+      averageScore: 4,
+      fiveStars: 0,
+      fourStars: 1,
+      oneStar: 0,
+      teamId: 'yunha',
+      threeStars: 0,
+      twoStars: 0,
+      type: 'DALLAEMFIT',
+    },
+  ];
 
   console.log('data = ', data);
 
@@ -46,11 +46,7 @@ export default function ReviewScores() {
     return () => controls.stop();
   }, [averageScore, rounded]);
 
-  return isLoading ? (
-    <DeferredComponent>
-      <SkeletonScores />
-    </DeferredComponent>
-  ) : (
+  return (
     <div className="flex w-full h-180pxr justify-center shrink-0 bg-white border-y-2 border-gray-200 my-5">
       <div className="flex h-full w-294pxr justify-between md:w-full md:gap-120pxr md:justify-center items-center">
         {/* 하트 평균 점수 */}
@@ -60,18 +56,12 @@ export default function ReviewScores() {
             <span className="text-2xl font-semibold text-gray-400">/5</span>
           </div>
           <div className="flex items-start gap-2pxr">
-            {Array.from({ length: 5 }, (_, idx) =>
-              isLoading ? (
-                <span key={idx} className="w-6 h-6">
-                  <Skeleton inline width="100%" height="100%" />
-                </span>
-              ) : (
-                <FillHeart
-                  key={idx}
-                  className={idx < Math.round(averageScore) ? 'text-red-500' : 'text-gray-400'}
-                />
-              ),
-            )}
+            {Array.from({ length: 5 }, (_, idx) => (
+              <FillHeart
+                key={idx}
+                className={idx < Math.round(averageScore) ? 'text-red-500' : 'text-gray-400'}
+              />
+            ))}
           </div>
         </div>
 
