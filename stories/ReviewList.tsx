@@ -1,4 +1,10 @@
+'use client';
+
+import React from 'react';
+import ReviewCard from '@/components/card/ReviewCard';
+import FilterTab from '@/components/tab/FilterTab';
 import { Review } from '@/types/review';
+// import { reviewData } from '@/app/reviews/data';
 
 export const reviews: Review[] = [
   {
@@ -125,3 +131,25 @@ export const reviewData = {
     },
   ],
 };
+
+export default function ReviewList() {
+  console.log('reviewData = ', reviewData);
+  if (!reviewData?.pages[0].data.length)
+    return (
+      <div className="w-full h-258pxr md:w-696pxr md:h-528pxr lg:w-996pxr lg:h-474pxr flex items-center justify-center">
+        불러올 데이터가 없습니다.
+      </div>
+    );
+  return (
+    <div className="flex w-full py-6 px-4 lg:p-6 flex-col items-start gap-10pxr bg-white border-t-2 border-gray-900">
+      <div className="flex flex-col items-start gap-6 self-stretch">
+        <FilterTab isReviewPage={true} />
+        {reviewData?.pages[0].data.map((review: Review, idx: number) => (
+          <div key={idx} className="relative w-full">
+            <ReviewCard {...review} isMyPage={false} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
